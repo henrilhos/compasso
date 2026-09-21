@@ -1,15 +1,17 @@
-import type { EventSource } from "../types";
+import type { OfferSource } from "../types";
 
 /**
- * TODO: implement. Shotgun is a JS-heavy SPA; a plain fetch of the HTML
- * likely won't contain event data. Check for a public JSON API first
- * (network tab on shotgun.live filtered by "Joinville"); fall back to
- * a headless browser (e.g. Playwright) only if no API is found.
+ * BLOQUEADO por decisão, não por código: exige headless
+ * browser (Vercel Checkpoint, fingerprint de TLS). Ver ADR-0002 — não
+ * implemente sem reabrir aquela decisão.
+ *
+ * Especificação completa — endpoint, mapeamento campo a campo e armadilhas
+ * medidas: https://github.com/henrilhos/compasso/issues/10
  */
-export const shotgunSource: EventSource = {
+export const shotgunSource: OfferSource = {
   id: "shotgun",
   name: "Shotgun",
-  async fetchEvents() {
+  async fetchOffers() {
     throw new Error("shotgun scraper not implemented yet");
   },
 };

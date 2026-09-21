@@ -15,10 +15,10 @@ de mexer na coleta.
   (`.github/workflows/collect.yml`), que executa cada scraper e faz upsert no
   banco.
 - `packages/scrapers` — um módulo por fonte, implementando
-  `EventSource.fetchEvents(): Promise<RawEvent[]>`. **Os scrapers ainda são
-  stubs** (`packages/scrapers/src/sources/*.ts`) — cada um precisa ser
-  implementado inspecionando o endpoint de busca/listagem do respectivo site.
-- `packages/db` — schema Drizzle (tabela `events`) e client para Postgres via
+  `OfferSource.fetchOffers()`. **Os scrapers ainda são stubs**
+  (`packages/scrapers/src/sources/*.ts`); cada fonte tem uma issue com o
+  endpoint, o mapeamento campo a campo e as armadilhas já mapeadas.
+- `packages/db` — schema Drizzle (tabela `offers`) e client para Postgres via
   `pg` (node-postgres), compatível tanto com um Postgres local quanto com
   Neon (usado em produção).
 

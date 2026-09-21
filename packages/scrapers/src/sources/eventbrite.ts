@@ -1,14 +1,16 @@
-import type { EventSource } from "../types";
+import type { OfferSource } from "../types";
 
 /**
- * TODO: implement. Eventbrite has a public Destination API used by its own
- * search pages; inspect eventbrite.com.br filtered by "Joinville" to find
- * the endpoint and shape, then map results to RawEvent[].
+ * API JSON real, precedida de um handshake CSRF. Atenção:
+ * `address.city` guarda o bairro, não a cidade.
+ *
+ * Especificação completa — endpoint, mapeamento campo a campo e armadilhas
+ * medidas: https://github.com/henrilhos/compasso/issues/7
  */
-export const eventbriteSource: EventSource = {
+export const eventbriteSource: OfferSource = {
   id: "eventbrite",
   name: "Eventbrite",
-  async fetchEvents() {
+  async fetchOffers() {
     throw new Error("eventbrite scraper not implemented yet");
   },
 };
