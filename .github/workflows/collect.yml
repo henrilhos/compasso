@@ -1,0 +1,26 @@
+name: Collect events
+
+on:
+  schedule:
+    # 06:00 America/Sao_Paulo (UTC-3), daily
+    - cron: "0 9 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter collector run collect
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
