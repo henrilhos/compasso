@@ -1,14 +1,16 @@
-import type { EventSource } from "../types";
+import type { OfferSource } from "../types";
 
 /**
- * TODO: implement. Sympla has no public search API for arbitrary cities;
- * inspect the network tab on sympla.com.br while filtering by "Joinville"
- * to find the listing endpoint, then map results to RawEvent[].
+ * Sem API JSON: parsear o payload RSC (`self.__next_f`) da
+ * listagem. A fonte de maior volume — ver a issue antes de começar.
+ *
+ * Especificação completa — endpoint, mapeamento campo a campo e armadilhas
+ * medidas: https://github.com/henrilhos/compasso/issues/6
  */
-export const symplaSource: EventSource = {
+export const symplaSource: OfferSource = {
   id: "sympla",
   name: "Sympla",
-  async fetchEvents() {
+  async fetchOffers() {
     throw new Error("sympla scraper not implemented yet");
   },
 };

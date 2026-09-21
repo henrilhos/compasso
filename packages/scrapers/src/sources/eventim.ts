@@ -1,13 +1,16 @@
-import type { EventSource } from "../types";
+import type { OfferSource } from "../types";
 
 /**
- * TODO: implement. Inspect eventim.com.br filtered by "Joinville" to find
- * the search/listing endpoint, then map results to RawEvent[].
+ * NÃO IMPLEMENTAR. Descartado por robots.txt, Akamai e
+ * inventário de 1 evento. Ver `docs/adr/0003-eventim-descartado.md`.
+ *
+ * Especificação completa — endpoint, mapeamento campo a campo e armadilhas
+ * medidas: https://github.com/henrilhos/compasso/issues/12
  */
-export const eventimSource: EventSource = {
+export const eventimSource: OfferSource = {
   id: "eventim",
   name: "Eventim",
-  async fetchEvents() {
+  async fetchOffers() {
     throw new Error("eventim scraper not implemented yet");
   },
 };

@@ -1,6 +1,6 @@
-export interface RawEvent {
-  /** Unique id of the event within its source, used for dedupe on upsert. */
-  sourceEventId: string;
+export interface RawOffer {
+  /** Unique id of the offer within its source, used for dedupe on upsert. */
+  sourceOfferId: string;
   title: string;
   description?: string;
   url: string;
@@ -15,9 +15,9 @@ export interface RawEvent {
   currency?: string;
 }
 
-export interface EventSource {
-  /** Stable identifier stored in the `events.source` column. */
+export interface OfferSource {
+  /** Stable identifier stored in the `offers.source` column. */
   id: string;
   name: string;
-  fetchEvents(): Promise<RawEvent[]>;
+  fetchOffers(): Promise<RawOffer[]>;
 }
