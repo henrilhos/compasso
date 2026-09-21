@@ -52,7 +52,10 @@ export default async function Home() {
     <main className="page">
       <header className="header">
         <h1>Compasso</h1>
-        <p>Agenda de eventos de Joinville e região.</p>
+        <p>
+          Agenda de eventos de Santa Catarina. Joinville, Jaraguá do Sul,
+          Itajaí, Balneário Camboriú, Florianópolis e São José.
+        </p>
       </header>
 
       {upcomingOffers.length === 0 && (
