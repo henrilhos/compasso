@@ -4,6 +4,10 @@ Agenda de eventos de Joinville e região, agregando várias fontes de venda de
 ingresso (Blumie, Meaple, Shotgun, Sympla, Eventbrite, Eventim) numa única
 página.
 
+O vocabulário do domínio está em [`CONTEXT.md`](./CONTEXT.md) e as decisões
+que são caras de reverter em [`docs/adr/`](./docs/adr/). Leia os dois antes
+de mexer na coleta.
+
 ## Estrutura
 
 - `apps/web` — Next.js, publicado na Vercel. Lê os eventos direto do Postgres.
@@ -46,7 +50,5 @@ página.
 
 ## Próximos passos
 
-Implementar cada scraper em `packages/scrapers/src/sources/`. Para cada
-fonte, veja se existe uma API pública de busca (Sympla e Eventbrite
-costumam ter) antes de recorrer a parsing de HTML (`cheerio`, já incluso) ou
-a um headless browser (necessário para SPAs como o Shotgun).
+Ver a issue [#3](https://github.com/henrilhos/compasso/issues/3) e suas
+sub-issues.
