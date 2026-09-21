@@ -1,8 +1,8 @@
 # Compasso
 
-Agenda de eventos de Joinville e região, agregando várias fontes de venda de
-ingresso (Blumie, Meaple, Shotgun, Sympla, Eventbrite, Eventim) numa única
-página.
+Agenda de eventos de Santa Catarina — Joinville, Jaraguá do Sul, Itajaí,
+Balneário Camboriú, Florianópolis e São José — agregando várias fontes de
+venda de ingresso numa única página.
 
 O vocabulário do domínio está em [`CONTEXT.md`](./CONTEXT.md) e as decisões
 que são caras de reverter em [`docs/adr/`](./docs/adr/). Leia os dois antes
