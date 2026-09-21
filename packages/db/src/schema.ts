@@ -7,12 +7,12 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-export const events = pgTable(
-  "events",
+export const offers = pgTable(
+  "offers",
   {
     id: text("id").primaryKey(),
     source: text("source").notNull(),
-    sourceEventId: text("source_event_id").notNull(),
+    sourceOfferId: text("source_offer_id").notNull(),
     title: text("title").notNull(),
     description: text("description"),
     url: text("url").notNull(),
@@ -33,14 +33,14 @@ export const events = pgTable(
       .defaultNow(),
   },
   (table) => [
-    unique("events_source_source_event_id_unique").on(
+    unique("offers_source_source_offer_id_unique").on(
       table.source,
-      table.sourceEventId,
+      table.sourceOfferId,
     ),
-    index("events_starts_at_idx").on(table.startsAt),
-    index("events_city_idx").on(table.city),
+    index("offers_starts_at_idx").on(table.startsAt),
+    index("offers_city_idx").on(table.city),
   ],
 );
 
-export type Event = typeof events.$inferSelect;
-export type NewEvent = typeof events.$inferInsert;
+export type Offer = typeof offers.$inferSelect;
+export type NewOffer = typeof offers.$inferInsert;

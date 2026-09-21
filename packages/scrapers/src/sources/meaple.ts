@@ -1,14 +1,16 @@
-import type { EventSource } from "../types";
+import type { OfferSource } from "../types";
 
 /**
- * TODO: implement. Inspect the site's listing page for Joinville events to
- * find the endpoint or HTML structure, then map results to RawEvent[]
- * (cheerio is available for HTML parsing).
+ * API pública em `api.meaple.com.br`. `city` é case-sensitive,
+ * e esta fonte não tem nome de local em campo nenhum.
+ *
+ * Especificação completa — endpoint, mapeamento campo a campo e armadilhas
+ * medidas: https://github.com/henrilhos/compasso/issues/9
  */
-export const meapleSource: EventSource = {
+export const meapleSource: OfferSource = {
   id: "meaple",
   name: "Meaple",
-  async fetchEvents() {
+  async fetchOffers() {
     throw new Error("meaple scraper not implemented yet");
   },
 };

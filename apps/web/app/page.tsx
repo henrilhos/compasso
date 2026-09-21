@@ -1,5 +1,5 @@
 import { asc, gte } from "drizzle-orm";
-import { events, getDb } from "@repo/db";
+import { getDb, offers } from "@repo/db";
 
 export const dynamic = "force-dynamic";
 
@@ -18,16 +18,16 @@ function formatTime(date: Date) {
   }).format(date);
 }
 
-async function getUpcomingEvents() {
+async function getUpcomingOffers() {
   const db = getDb();
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
 
   return db
     .select()
-    .from(events)
-    .where(gte(events.startsAt, startOfToday))
-    .orderBy(asc(events.startsAt));
+    .from(offers)
+    .where(gte(offers.startsAt, startOfToday))
+    .orderBy(asc(offers.startsAt));
 }
 
 function groupByDate<T extends { startsAt: Date }>(items: T[]) {
@@ -45,8 +45,8 @@ function groupByDate<T extends { startsAt: Date }>(items: T[]) {
 }
 
 export default async function Home() {
-  const upcomingEvents = await getUpcomingEvents();
-  const groupedByDate = groupByDate(upcomingEvents);
+  const upcomingOffers = await getUpcomingOffers();
+  const groupedByDate = groupByDate(upcomingOffers);
 
   return (
     <main className="page">
@@ -55,25 +55,25 @@ export default async function Home() {
         <p>Agenda de eventos de Joinville e região.</p>
       </header>
 
-      {upcomingEvents.length === 0 && (
+      {upcomingOffers.length === 0 && (
         <p className="empty">Nenhum evento encontrado no momento.</p>
       )}
 
-      {[...groupedByDate.entries()].map(([date, dateEvents]) => (
+      {[...groupedByDate.entries()].map(([date, dateOffers]) => (
         <section key={date} className="dateGroup">
           <h2>{date}</h2>
           <ul className="eventList">
-            {dateEvents.map((event) => (
-              <li key={event.id} className="eventCard">
-                <a href={event.url} target="_blank" rel="noopener noreferrer">
+            {dateOffers.map((offer) => (
+              <li key={offer.id} className="eventCard">
+                <a href={offer.url} target="_blank" rel="noopener noreferrer">
                   <span className="eventTime">
-                    {formatTime(event.startsAt)}
+                    {formatTime(offer.startsAt)}
                   </span>
-                  <span className="eventTitle">{event.title}</span>
-                  {event.venueName && (
-                    <span className="eventVenue">{event.venueName}</span>
+                  <span className="eventTitle">{offer.title}</span>
+                  {offer.venueName && (
+                    <span className="eventVenue">{offer.venueName}</span>
                   )}
-                  <span className="eventSource">{event.source}</span>
+                  <span className="eventSource">{offer.source}</span>
                 </a>
               </li>
             ))}

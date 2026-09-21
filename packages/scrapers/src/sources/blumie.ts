@@ -1,14 +1,16 @@
-import type { EventSource } from "../types";
+import type { OfferSource } from "../types";
 
 /**
- * TODO: implement. Inspect the site's listing page for Joinville/Blumenau
- * region events to find the endpoint or HTML structure, then map results
- * to RawEvent[] (cheerio is available for HTML parsing).
+ * API pública em `api.blumie.com.br`. `days` é um array —
+ * evento de vários dias vira uma Oferta só (ADR-0001).
+ *
+ * Especificação completa — endpoint, mapeamento campo a campo e armadilhas
+ * medidas: https://github.com/henrilhos/compasso/issues/8
  */
-export const blumieSource: EventSource = {
+export const blumieSource: OfferSource = {
   id: "blumie",
   name: "Blumie",
-  async fetchEvents() {
+  async fetchOffers() {
     throw new Error("blumie scraper not implemented yet");
   },
 };
