@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "collect": "tsx src/index.ts",
+    "collect": "tsx --env-file-if-exists=.env src/index.ts",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
