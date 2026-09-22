@@ -1,3 +1,4 @@
+import type { CoveredCity } from "@repo/db";
 import type { OfferSource } from "../types";
 
 /**
@@ -10,7 +11,7 @@ import type { OfferSource } from "../types";
 export const symplaSource: OfferSource = {
   id: "sympla",
   name: "Sympla",
-  async fetchOffers() {
+  async fetchOffers(_city: CoveredCity) {
     throw new Error("sympla scraper not implemented yet");
   },
 };

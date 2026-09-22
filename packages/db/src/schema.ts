@@ -25,6 +25,9 @@ export const offers = pgTable(
     priceMinCents: integer("price_min_cents"),
     priceMaxCents: integer("price_max_cents"),
     currency: text("currency").default("BRL"),
+    lastSeenAt: timestamp("last_seen_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -39,6 +42,7 @@ export const offers = pgTable(
     ),
     index("offers_starts_at_idx").on(table.startsAt),
     index("offers_city_idx").on(table.city),
+    index("offers_last_seen_at_idx").on(table.lastSeenAt),
   ],
 );
 

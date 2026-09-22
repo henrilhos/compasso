@@ -1,3 +1,4 @@
+import type { CoveredCity } from "@repo/db";
 import type { OfferSource } from "../types";
 
 /**
@@ -10,7 +11,7 @@ import type { OfferSource } from "../types";
 export const eventbriteSource: OfferSource = {
   id: "eventbrite",
   name: "Eventbrite",
-  async fetchOffers() {
+  async fetchOffers(_city: CoveredCity) {
     throw new Error("eventbrite scraper not implemented yet");
   },
 };
