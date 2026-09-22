@@ -92,12 +92,12 @@ describe("meapleSource", () => {
     });
     expect(fetchMock).toHaveBeenNthCalledWith(
       1,
-      "https://api.meaple.com.br/v1/events?city=Joinville&limit=50",
+      "https://api.meaple.com.br/v1/events?city=Joinville&priority=0&limit=50",
       expect.objectContaining({ headers: expect.any(Headers) }),
     );
     expect(fetchMock).toHaveBeenNthCalledWith(
       2,
-      "https://api.meaple.com.br/v1/events?city=Joinville&limit=50&cursor=next",
+      "https://api.meaple.com.br/v1/events?city=Joinville&priority=0&limit=50&cursor=next",
       expect.objectContaining({ headers: expect.any(Headers) }),
     );
   });
