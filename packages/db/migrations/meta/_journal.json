@@ -15,6 +15,13 @@
       "when": 1790034549464,
       "tag": "0001_flimsy_proemial_gods",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790035000000,
+      "tag": "0002_fresh_detail_pages",
+      "breakpoints": true
     }
   ]
 }
