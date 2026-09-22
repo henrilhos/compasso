@@ -115,7 +115,7 @@ export function extractDetailDescription(html: string): string | undefined {
   const section = $(
     "#description, [data-testid*='description' i], [class*='description' i], [id*='description' i]",
   ).first();
-  const description = readableText(section.html());
+  const description = readableText(section.html() ?? undefined);
   if (description) return description;
 
   const eventPage =
