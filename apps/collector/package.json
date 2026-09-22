@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "collect": "tsx --env-file-if-exists=.env src/index.ts",
+    "enrich": "tsx --env-file-if-exists=.env src/enrich.ts",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {

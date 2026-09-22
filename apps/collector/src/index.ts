@@ -1,33 +1,12 @@
-import {
-  COVERED_CITIES,
-  getDb,
-  offerDetailPages,
-  offers,
-  type NewOffer,
-} from "@repo/db";
-import {
-  DETAIL_PAGE_STATUSES,
-  enrichDescriptions,
-  needsDescriptionEnrichment,
-  sources,
-  type DetailPageRecord,
-  type DescriptionEnrichmentStore,
-} from "@repo/scrapers";
-import { eq, inArray, sql } from "drizzle-orm";
+import { COVERED_CITIES, getDb, offers, type NewOffer } from "@repo/db";
+import { enrichDescriptions, sources } from "@repo/scrapers";
+import { sql } from "drizzle-orm";
+import { createDescriptionStore } from "./description-store";
+import { detailPageIntervalMs, detailPageLimit } from "./enrich-config";
 
 function usefulText(value: string | undefined): string | undefined {
   const text = value?.trim();
   return text || undefined;
-}
-
-function detailPageLimit(): number {
-  const value = Number(process.env.DETAIL_PAGE_MAX_PER_RUN ?? 100);
-  return Number.isFinite(value) && value >= 0 ? Math.floor(value) : 100;
-}
-
-function detailPageIntervalMs(): number {
-  const value = Number(process.env.DETAIL_PAGE_MIN_INTERVAL_MS ?? 1_000);
-  return Number.isFinite(value) && value >= 0 ? value : 1_000;
 }
 
 function selectedSources(): typeof sources {
@@ -108,68 +87,7 @@ async function main() {
     }
   }
 
-  const descriptionStore: DescriptionEnrichmentStore = {
-    async listCandidates() {
-      if (collectedOfferIds.size === 0) return [];
-      const rows = await db
-        .select({
-          id: offers.id,
-          source: offers.source,
-          url: offers.url,
-          descriptionOrigin: offers.descriptionOrigin,
-        })
-        .from(offers)
-        .where(inArray(offers.id, [...collectedOfferIds]));
-      return rows
-        .filter((offer) => needsDescriptionEnrichment(offer.descriptionOrigin))
-        .map(({ id, source, url }) => ({ id, source, url }));
-    },
-    async getPage(url) {
-      const [page] = await db
-        .select({
-          status: offerDetailPages.status,
-          description: offerDetailPages.description,
-          blockedAttempts: offerDetailPages.blockedAttempts,
-        })
-        .from(offerDetailPages)
-        .where(eq(offerDetailPages.url, url));
-      if (!page) return undefined;
-      return DETAIL_PAGE_STATUSES.includes(
-        page.status as DetailPageRecord["status"],
-      )
-        ? (page as DetailPageRecord)
-        : undefined;
-    },
-    async savePage(page) {
-      await db
-        .insert(offerDetailPages)
-        .values({
-          ...page,
-          blockedAttempts: page.blockedAttempts ?? 0,
-          updatedAt: new Date(),
-        })
-        .onConflictDoUpdate({
-          target: offerDetailPages.url,
-          set: {
-            ...page,
-            blockedAttempts: page.blockedAttempts ?? 0,
-            updatedAt: new Date(),
-          },
-        });
-    },
-    async applyDescription(id, description) {
-      await db
-        .update(offers)
-        .set({
-          description,
-          descriptionOrigin: "detail",
-          updatedAt: new Date(),
-        })
-        .where(
-          sql`${offers.id} = ${id} and (${offers.descriptionOrigin} is null or ${offers.descriptionOrigin} = 'detail')`,
-        );
-    },
-  };
+  const descriptionStore = createDescriptionStore(db, collectedOfferIds);
 
   try {
     await enrichDescriptions({
