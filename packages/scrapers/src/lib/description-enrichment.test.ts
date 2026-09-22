@@ -55,6 +55,28 @@ describe("extractDetailDescription", () => {
       "VENHA DE FANTASIA!! Show da Chococorn.",
     );
   });
+
+  it("skips a heading-only description match and reads the sibling content", () => {
+    // Reproduces a real Sympla detail page: the description selector matches
+    // an <h3> label ("Descrição do evento") that sits in its own wrapper,
+    // with the actual text in a sibling wrapper instead of inside the match.
+    const html = `
+      <html>
+        <body>
+          <div class="readme-audima">
+            <h3 data-testid="event-description-section">Descrição do evento</h3>
+          </div>
+          <div class="readme-audima">
+            <div class="content"><p>Mentoria para donos de restaurantes.</p></div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    expect(extractDetailDescription(html)).toBe(
+      "Mentoria para donos de restaurantes.",
+    );
+  });
 });
 
 describe("enrichDescriptions", () => {
