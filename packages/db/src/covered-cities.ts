@@ -10,6 +10,7 @@ export const COVERED_CITIES = [
   "Balneário Camboriú",
   "Florianópolis",
   "São José",
+  "Curitiba",
 ] as const;
 
 export type CoveredCity = (typeof COVERED_CITIES)[number];
