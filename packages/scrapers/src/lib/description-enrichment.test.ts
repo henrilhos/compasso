@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   enrichDescriptions,
+  extractDetailDescription,
   needsDescriptionEnrichment,
   normalizeDetailUrl,
   type DescriptionEnrichmentStore,
@@ -32,6 +33,27 @@ describe("needsDescriptionEnrichment", () => {
     expect(needsDescriptionEnrichment("listing")).toBe(false);
     expect(needsDescriptionEnrichment("detail")).toBe(true);
     expect(needsDescriptionEnrichment(null)).toBe(true);
+  });
+});
+
+describe("extractDetailDescription", () => {
+  it("falls back to the meta description even without an Event og:type or microdata", () => {
+    // Reproduces a real Blumie detail page: no JSON-LD script tag or
+    // description section in the static HTML, og:type is "website", and
+    // the event text only lives in the static meta description.
+    const html = `
+      <html>
+        <head>
+          <meta property="og:type" content="website" />
+          <meta name="description" content="VENHA DE FANTASIA!! Show da Chococorn." />
+        </head>
+        <body></body>
+      </html>
+    `;
+
+    expect(extractDetailDescription(html)).toBe(
+      "VENHA DE FANTASIA!! Show da Chococorn.",
+    );
   });
 });
 

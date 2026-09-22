@@ -118,12 +118,10 @@ export function extractDetailDescription(html: string): string | undefined {
   const description = readableText(section.html() ?? undefined);
   if (description) return description;
 
-  const eventPage =
-    $("meta[property='og:type']").attr("content") === "event" ||
-    $("[itemtype*='Event' i]").length > 0;
-  return eventPage
-    ? readableText($("meta[name='description']").attr("content") ?? undefined)
-    : undefined;
+  // Last resort: many event pages (e.g. Next.js apps) never set og:type to
+  // "event" or use Event microdata, so gating on those signals discards a
+  // real description that is already scoped to this specific URL.
+  return readableText($("meta[name='description']").attr("content") ?? undefined);
 }
 
 function isFinal(record: DetailPageRecord): boolean {
