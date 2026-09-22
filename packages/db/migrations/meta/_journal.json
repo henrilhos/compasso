@@ -29,6 +29,13 @@
       "when": 1790050752741,
       "tag": "0003_drop_offer_price_columns",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790059200000,
+      "tag": "0004_add_cultural_event_columns",
+      "breakpoints": true
     }
   ]
 }

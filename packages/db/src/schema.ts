@@ -1,4 +1,6 @@
 import {
+  boolean,
+  doublePrecision,
   index,
   integer,
   pgTable,
@@ -24,6 +26,13 @@ export const offers = pgTable(
     city: text("city").notNull(),
     startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
     endsAt: timestamp("ends_at", { withTimezone: true }),
+    isCulturalEvent: boolean("is_cultural_event"),
+    /** Confidence (0-1) the classifier reported for `isCulturalEvent`. */
+    culturalEventConfidence: doublePrecision("cultural_event_confidence"),
+    /** Null means the offer still needs cultural-event classification. */
+    culturalEventClassifiedAt: timestamp("cultural_event_classified_at", {
+      withTimezone: true,
+    }),
     lastSeenAt: timestamp("last_seen_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
