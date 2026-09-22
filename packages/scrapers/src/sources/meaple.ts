@@ -120,6 +120,9 @@ export const meapleSource: OfferSource = {
 
       const url = new URL(MEAPLE_SEARCH_URL);
       url.searchParams.set("city", city);
+      // Sem isso, `city` devolve resultado incompleto (ou vazio) sem erro
+      // — não documentado, achado depurando #9. Ver issue para detalhes.
+      url.searchParams.set("priority", "0");
       url.searchParams.set("limit", String(MEAPLE_PAGE_SIZE));
       if (cursor) url.searchParams.set("cursor", cursor);
 
