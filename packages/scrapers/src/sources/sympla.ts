@@ -59,6 +59,33 @@ function extractJsonObject(input: string, start: number): unknown {
   throw new Error("Unterminated JSON object");
 }
 
+function asSearchResult(value: unknown): SymplaSearchResult | undefined {
+  if (typeof value !== "object" || value === null) return undefined;
+
+  const result = value as Partial<SymplaSearchResult>;
+  if (
+    !Array.isArray(result.data) ||
+    typeof result.total !== "number" ||
+    typeof result.limit !== "number" ||
+    typeof result.page !== "number"
+  ) {
+    return undefined;
+  }
+
+  return result as SymplaSearchResult;
+}
+
+function findSearchResult(
+  payload: string,
+  marker: string,
+): SymplaSearchResult | undefined {
+  const markerIndex = payload.indexOf(marker);
+  if (markerIndex === -1) return undefined;
+
+  const value = extractJsonObject(payload, markerIndex + marker.length);
+  return asSearchResult(value);
+}
+
 /** Extracts Sympla's search result from its Next.js Flight HTML payload. */
 export function parseSymplaSearchResult(html: string): SymplaSearchResult {
   const chunks: string[] = [];
@@ -86,27 +113,16 @@ export function parseSymplaSearchResult(html: string): SymplaSearchResult {
   });
 
   const flightPayload = chunks.join("");
-  const marker = '"searchDataResult":';
-  const markerIndex = flightPayload.indexOf(marker);
-  if (markerIndex === -1) {
-    throw new Error("Sympla searchDataResult was not found in the HTML");
-  }
+  const searchResult =
+    findSearchResult(flightPayload, '"searchDataResult":') ??
+    findSearchResult(flightPayload, '"dataSectionMoreEvents":') ??
+    // Some pages are returned as a raw RSC stream instead of HTML scripts.
+    findSearchResult(html, '"searchDataResult":') ??
+    findSearchResult(html, '"dataSectionMoreEvents":');
 
-  const result = extractJsonObject(
-    flightPayload,
-    markerIndex + marker.length,
-  ) as Partial<SymplaSearchResult>;
+  if (searchResult) return searchResult;
 
-  if (
-    !Array.isArray(result.data) ||
-    typeof result.total !== "number" ||
-    typeof result.limit !== "number" ||
-    typeof result.page !== "number"
-  ) {
-    throw new Error("Sympla searchDataResult has an unexpected shape");
-  }
-
-  return result as SymplaSearchResult;
+  throw new Error("Sympla search result was not found in the HTML");
 }
 
 function addressFromLocation(

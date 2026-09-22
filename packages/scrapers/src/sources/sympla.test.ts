@@ -39,7 +39,44 @@ describe("parseSymplaSearchResult", () => {
 
   it("fails clearly when the page is not a normal Sympla HTML response", () => {
     expect(() => parseSymplaSearchResult("<html></html>")).toThrow(
-      "searchDataResult was not found",
+      "search result was not found",
+    );
+  });
+
+  it("extracts the city landing page payload", () => {
+    const event = {
+      id: 3465310,
+      name: "CUPOLA Aluguel Day",
+      location: { city: "Curitiba" },
+    };
+    const payload = {
+      dataSectionMoreEvents: {
+        data: [event],
+        total: 561,
+        limit: 16,
+        page: 1,
+      },
+    };
+
+    expect(
+      parseSymplaSearchResult(
+        [flightScript({ before: true }), flightScript(payload)].join(""),
+      ),
+    ).toEqual(payload.dataSectionMoreEvents);
+  });
+
+  it("extracts a search result from a raw RSC stream", () => {
+    const payload = {
+      searchDataResult: {
+        data: [],
+        total: 0,
+        limit: 24,
+        page: 2,
+      },
+    };
+
+    expect(parseSymplaSearchResult(`2d:${JSON.stringify(payload)}\n`)).toEqual(
+      payload.searchDataResult,
     );
   });
 });
