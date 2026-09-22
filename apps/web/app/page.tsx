@@ -1,5 +1,6 @@
-import { and, asc, gte } from "drizzle-orm";
-import { getDb, offers } from "@repo/db";
+import { and, asc, eq, gte } from "drizzle-orm";
+import { COVERED_CITIES, getDb, offers } from "@repo/db";
+import { getSelectedCity, type CityFilter } from "./city-filter";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ function formatTime(date: Date) {
   }).format(date);
 }
 
-async function getUpcomingOffers() {
+async function getUpcomingOffers(city: CityFilter) {
   const db = getDb();
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
@@ -35,6 +36,7 @@ async function getUpcomingOffers() {
       and(
         gte(offers.startsAt, startOfToday),
         gte(offers.lastSeenAt, staleCutoff),
+        city !== "all" ? eq(offers.city, city) : undefined,
       ),
     )
     .orderBy(asc(offers.startsAt));
@@ -54,8 +56,14 @@ function groupByDate<T extends { startsAt: Date }>(items: T[]) {
   return groups;
 }
 
-export default async function Home() {
-  const upcomingOffers = await getUpcomingOffers();
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ city?: string | string[] }>;
+}) {
+  const { city: cityParam } = await searchParams;
+  const selectedCity = getSelectedCity(cityParam);
+  const upcomingOffers = await getUpcomingOffers(selectedCity);
   const groupedByDate = groupByDate(upcomingOffers);
 
   return (
@@ -64,9 +72,22 @@ export default async function Home() {
         <h1>Compasso</h1>
         <p>
           Agenda de eventos de Santa Catarina. Joinville, Jaraguá do Sul,
-          Itajaí, Balneário Camboriú, Florianópolis e São José.
+          Itajaí, Balneário Camboriú, Florianópolis, São José e Curitiba.
         </p>
       </header>
+
+      <form className="cityFilter" method="get">
+        <label htmlFor="city">Cidade</label>
+        <select id="city" name="city" defaultValue={selectedCity}>
+          <option value="all">Todas as cidades</option>
+          {COVERED_CITIES.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+        <button type="submit">Filtrar</button>
+      </form>
 
       {upcomingOffers.length === 0 && (
         <p className="empty">Nenhum evento encontrado no momento.</p>
@@ -83,6 +104,7 @@ export default async function Home() {
                     {formatTime(offer.startsAt)}
                   </span>
                   <span className="eventTitle">{offer.title}</span>
+                  <span className="eventCity">{offer.city}</span>
                   {offer.venueName && (
                     <span className="eventVenue">{offer.venueName}</span>
                   )}

@@ -64,6 +64,31 @@ a {
   color: var(--muted);
 }
 
+.cityFilter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.cityFilter label {
+  font-weight: 600;
+}
+
+.cityFilter select,
+.cityFilter button {
+  color: inherit;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  padding: 0.45rem 0.6rem;
+  font: inherit;
+}
+
+.cityFilter button {
+  cursor: pointer;
+}
+
 .dateGroup {
   margin-bottom: 2rem;
 }
@@ -115,8 +140,14 @@ a {
   font-size: 0.85rem;
 }
 
+.eventCity {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .eventSource {
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
   grid-column: 3;
   align-self: center;
   font-size: 0.75rem;
