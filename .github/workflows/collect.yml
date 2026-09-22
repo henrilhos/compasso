@@ -21,6 +21,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm --filter collector run collect
+      - name: Apply database migrations
+        run: pnpm --filter @repo/db run db:migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Collect events
+        run: pnpm --filter collector run collect
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
