@@ -11,6 +11,29 @@ const event = {
   status: "PUBLISHED",
   canceledAt: null,
   image: { url: "https://files.meaple.com.br/event.jpg" },
+  description: [
+    { type: "paragraph", children: [{ text: "Uma festa incrível", bold: true }] },
+    {
+      type: "bulleted-list",
+      children: [
+        {
+          type: "list-item",
+          children: [{ text: "Entrada: " }, { text: "R$ 20", bold: true }],
+        },
+      ],
+    },
+    {
+      type: "paragraph",
+      children: [
+        { text: "Detalhes: " },
+        {
+          type: "link",
+          url: "https://example.com",
+          children: [{ text: "clique aqui" }],
+        },
+      ],
+    },
+  ],
   address: {
     street: "Avenida Santos Dumont",
     number: "7770",
@@ -82,6 +105,8 @@ describe("meapleSource", () => {
           title: "Festa em Joinville",
           url: "https://meaple.com.br/sitio-novo/festa-em-joinville",
           imageUrl: "https://files.meaple.com.br/event.jpg",
+          description:
+            "Uma festa incrível\n\nEntrada: R$ 20\n\nDetalhes: clique aqui",
           address:
             "Avenida Santos Dumont, 7770, Joinville, Santa Catarina, 89226-435",
           city: "Joinville",
