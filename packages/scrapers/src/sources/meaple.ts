@@ -1,3 +1,4 @@
+import type { CoveredCity } from "@repo/db";
 import type { OfferSource } from "../types";
 
 /**
@@ -10,7 +11,7 @@ import type { OfferSource } from "../types";
 export const meapleSource: OfferSource = {
   id: "meaple",
   name: "Meaple",
-  async fetchOffers() {
+  async fetchOffers(_city: CoveredCity) {
     throw new Error("meaple scraper not implemented yet");
   },
 };

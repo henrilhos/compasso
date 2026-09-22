@@ -7,13 +7,19 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "fixtures:refresh": "tsx scripts/refresh-fixtures.ts"
   },
   "dependencies": {
-    "cheerio": "^1.2.0"
+    "@repo/db": "workspace:*",
+    "cheerio": "^1.2.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "typescript": "7.0.2"
+    "tsx": "^4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "^5.0.1"
   }
 }
