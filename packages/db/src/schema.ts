@@ -15,6 +15,8 @@ export const offers = pgTable(
     sourceOfferId: text("source_offer_id").notNull(),
     title: text("title").notNull(),
     description: text("description"),
+    /** Whether the current description came from the listing or its detail URL. */
+    descriptionOrigin: text("description_origin"),
     url: text("url").notNull(),
     imageUrl: text("image_url"),
     venueName: text("venue_name"),
@@ -44,6 +46,20 @@ export const offers = pgTable(
     index("offers_city_idx").on(table.city),
     index("offers_last_seen_at_idx").on(table.lastSeenAt),
   ],
+);
+
+export const offerDetailPages = pgTable(
+  "offer_detail_pages",
+  {
+    url: text("url").primaryKey(),
+    status: text("status").notNull(),
+    description: text("description"),
+    blockedAttempts: integer("blocked_attempts").notNull().default(0),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [index("offer_detail_pages_status_idx").on(table.status)],
 );
 
 export type Offer = typeof offers.$inferSelect;
