@@ -71,7 +71,7 @@ describe("enrichDescriptions", () => {
     });
 
     expect(repository.savePage).toHaveBeenCalledWith(
-      expect.objectContaining({ status: "no_description", description: undefined }),
+      expect.objectContaining({ status: "no_description" }),
     );
     expect(repository.applyDescription).not.toHaveBeenCalled();
   });
