@@ -1,6 +1,7 @@
+/** Unset (the default) means the run works through every candidate. */
 export function culturalEventClassificationLimit(): number {
-  const value = Number(process.env.CULTURAL_EVENT_MAX_PER_RUN ?? 100);
-  return Number.isFinite(value) && value >= 0 ? Math.floor(value) : 100;
+  const value = Number(process.env.CULTURAL_EVENT_MAX_PER_RUN);
+  return Number.isFinite(value) && value >= 0 ? Math.floor(value) : Infinity;
 }
 
 export function typesafeAiApiKey(): string {
