@@ -64,7 +64,9 @@ function readableText(value: string | undefined): string | undefined {
   if (!value) return undefined;
   const $ = load(value);
   $("br").replaceWith("\n");
-  $("p, li").each((_, element) => $(element).append("\n\n"));
+  $("p, li").each((_, element) => {
+    $(element).append("\n\n");
+  });
   const text = $.root()
     .text()
     .replace(/\r/g, "")
@@ -120,7 +122,7 @@ export function extractDetailDescription(html: string): string | undefined {
     $("meta[property='og:type']").attr("content") === "event" ||
     $("[itemtype*='Event' i]").length > 0;
   return eventPage
-    ? readableText($("meta[name='description']").attr("content"))
+    ? readableText($("meta[name='description']").attr("content") ?? undefined)
     : undefined;
 }
 
