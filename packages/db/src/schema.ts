@@ -24,9 +24,6 @@ export const offers = pgTable(
     city: text("city").notNull(),
     startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
     endsAt: timestamp("ends_at", { withTimezone: true }),
-    priceMinCents: integer("price_min_cents"),
-    priceMaxCents: integer("price_max_cents"),
-    currency: text("currency").default("BRL"),
     lastSeenAt: timestamp("last_seen_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
