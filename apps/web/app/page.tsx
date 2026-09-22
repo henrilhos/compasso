@@ -1,7 +1,9 @@
-import { asc, gte } from "drizzle-orm";
+import { and, asc, gte } from "drizzle-orm";
 import { getDb, offers } from "@repo/db";
 
 export const dynamic = "force-dynamic";
+
+const STALE_AFTER_DAYS = 3;
 
 function formatDate(date: Date) {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -23,10 +25,18 @@ async function getUpcomingOffers() {
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
 
+  const staleCutoff = new Date();
+  staleCutoff.setDate(staleCutoff.getDate() - STALE_AFTER_DAYS);
+
   return db
     .select()
     .from(offers)
-    .where(gte(offers.startsAt, startOfToday))
+    .where(
+      and(
+        gte(offers.startsAt, startOfToday),
+        gte(offers.lastSeenAt, staleCutoff),
+      ),
+    )
     .orderBy(asc(offers.startsAt));
 }
 

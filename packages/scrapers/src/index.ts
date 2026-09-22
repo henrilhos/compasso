@@ -5,6 +5,7 @@ import { meapleSource } from "./sources/meaple";
 import { shotgunSource } from "./sources/shotgun";
 import { symplaSource } from "./sources/sympla";
 
+export * from "./lib";
 export * from "./types";
 
 export const sources = [
