@@ -95,7 +95,7 @@ export async function classifyCulturalEvents({
   repository,
   apiKey,
   fetchPage = httpFetch,
-  maxItems = 100,
+  maxItems = Infinity,
   threshold = DEFAULT_THRESHOLD,
 }: ClassifyCulturalEventsOptions): Promise<void> {
   const candidates = (await repository.listCandidates()).slice(0, maxItems);
