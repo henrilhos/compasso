@@ -1,8 +1,8 @@
 # Compasso
 
-Agenda de eventos de Santa Catarina — Joinville, Jaraguá do Sul, Itajaí,
-Balneário Camboriú, Florianópolis e São José — agregando várias fontes de
-venda de ingresso numa única página.
+Agenda de eventos das Cidades Cobertas definidas em
+[`packages/db/src/covered-cities.ts`](./packages/db/src/covered-cities.ts),
+agregando várias fontes de venda de ingresso numa única página.
 
 O vocabulário do domínio está em [`CONTEXT.md`](./CONTEXT.md) e as decisões
 que são caras de reverter em [`docs/adr/`](./docs/adr/). Leia os dois antes
@@ -15,9 +15,9 @@ de mexer na coleta.
   (`.github/workflows/collect.yml`), que executa cada scraper e faz upsert no
   banco.
 - `packages/scrapers` — um módulo por fonte, implementando
-  `OfferSource.fetchOffers()`. **Os scrapers ainda são stubs**
-  (`packages/scrapers/src/sources/*.ts`); cada fonte tem uma issue com o
-  endpoint, o mapeamento campo a campo e as armadilhas já mapeadas.
+  `OfferSource.fetchOffers()`. As fontes ativas estão em
+  `packages/scrapers/src/index.ts`; outras permanecem fora dessa lista
+  quando a coleta está bloqueada por decisão documentada.
 - `packages/db` — schema Drizzle (tabela `offers`) e client para Postgres via
   `pg` (node-postgres), compatível tanto com um Postgres local quanto com
   Neon (usado em produção).

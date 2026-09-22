@@ -6,7 +6,7 @@ Glossário do domínio. Só vocabulário — nada de decisão de implementação
 ## Fonte
 
 Uma plataforma de venda de ingresso da qual o Compasso coleta dados
-(Blumie, Meaple, Shotgun, Sympla, Eventbrite, Eventim). Cada Fonte tem um
+(Blumie, Meaple, Pixta, Shotgun, Sympla, Eventbrite, Eventim). Cada Fonte tem um
 identificador estável e curto (`sympla`, `eventim`, …) que acompanha todo
 dado dela.
 
@@ -20,6 +20,12 @@ vende no Sympla e no Eventbrite gera duas Ofertas, e hoje isso aparece como
 dois cards na agenda. Isso é aceito deliberadamente — ver [[Evento]].
 
 A identidade de uma Oferta é o par (Fonte, id do evento dentro da Fonte).
+
+## Descrição da Oferta
+
+Texto publicado pela Fonte que apresenta uma [[Oferta]], seja na listagem
+(inclusive um resumo) ou na página da própria Oferta. Texto vazio não é uma
+Descrição da Oferta.
 
 ## Evento
 
@@ -50,9 +56,9 @@ Evento passado não é coletado nem exibido.
 
 ## Cidade Coberta
 
-Um município cuja agenda o Compasso exibe. A lista é fechada e explícita:
-Joinville, Jaraguá do Sul, Itajaí, Balneário Camboriú, Florianópolis e
-São José.
+Um município cuja agenda o Compasso exibe. A lista é fechada e explícita;
+`packages/db/src/covered-cities.ts` é sempre a fonte da verdade para saber
+quais municípios estão cobertos.
 
 O critério de entrada é **volume de eventos**, não distância de Joinville.
 Por isso Florianópolis está na lista e Araquari, que faz divisa com
