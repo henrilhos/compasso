@@ -1,6 +1,10 @@
 import { and, asc, eq, gte } from "drizzle-orm";
 import { COVERED_CITIES, getDb, offers } from "@repo/db";
 import { getSelectedCity, type CityFilter } from "./city-filter";
+import {
+  getSelectedCulturalEventFilter,
+  type CulturalEventFilter,
+} from "./cultural-event-filter";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +25,10 @@ function formatTime(date: Date) {
   }).format(date);
 }
 
-async function getUpcomingOffers(city: CityFilter) {
+async function getUpcomingOffers(
+  city: CityFilter,
+  culturalEvent: CulturalEventFilter,
+) {
   const db = getDb();
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
@@ -37,6 +44,9 @@ async function getUpcomingOffers(city: CityFilter) {
         gte(offers.startsAt, startOfToday),
         gte(offers.lastSeenAt, staleCutoff),
         city !== "all" ? eq(offers.city, city) : undefined,
+        culturalEvent !== "all"
+          ? eq(offers.isCulturalEvent, culturalEvent === "cultural")
+          : undefined,
       ),
     )
     .orderBy(asc(offers.startsAt));
@@ -59,11 +69,18 @@ function groupByDate<T extends { startsAt: Date }>(items: T[]) {
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ city?: string | string[] }>;
+  searchParams: Promise<{
+    city?: string | string[];
+    cultural?: string | string[];
+  }>;
 }) {
-  const { city: cityParam } = await searchParams;
+  const { city: cityParam, cultural: culturalParam } = await searchParams;
   const selectedCity = getSelectedCity(cityParam);
-  const upcomingOffers = await getUpcomingOffers(selectedCity);
+  const selectedCulturalEvent = getSelectedCulturalEventFilter(culturalParam);
+  const upcomingOffers = await getUpcomingOffers(
+    selectedCity,
+    selectedCulturalEvent,
+  );
   const groupedByDate = groupByDate(upcomingOffers);
 
   return (
@@ -86,6 +103,18 @@ export default async function Home({
             </option>
           ))}
         </select>
+
+        <label htmlFor="cultural">Tipo</label>
+        <select
+          id="cultural"
+          name="cultural"
+          defaultValue={selectedCulturalEvent}
+        >
+          <option value="all">Todos os eventos</option>
+          <option value="cultural">Somente culturais</option>
+          <option value="not_cultural">Somente não culturais</option>
+        </select>
+
         <button type="submit">Filtrar</button>
       </form>
 
