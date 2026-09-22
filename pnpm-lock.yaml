@@ -184,6 +184,9 @@ importers:
       '@repo/scrapers':
         specifier: workspace:*
         version: link:../../packages/scrapers
+      drizzle-orm:
+        specifier: ^0.45.3
+        version: 0.45.3(@neondatabase/serverless@1.1.0)(@types/pg@8.23.1)(pg@8.23.0)
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
