@@ -193,14 +193,21 @@ export async function enrichDescriptions({
     groups.set(url, [...(groups.get(url) ?? []), candidate]);
   }
 
+  console.log(
+    `[enrich] ${groups.size} detail page(s) to check, up to ${maxPages} fetch(es) this run`,
+  );
+
   const lastRequestAt = new Map<string, number>();
   let attempted = 0;
+  let reused = 0;
+  let described = 0;
   for (const [url, candidates] of groups) {
     try {
       const previous = await repository.getPage(url);
       if (previous && isFinal(previous)) {
         // A previous successful read describes every Offer at this URL, even
         // one first observed in a later collection.
+        reused++;
         if (previous.description) {
           await Promise.all(
             candidates.map((candidate) =>
@@ -210,7 +217,10 @@ export async function enrichDescriptions({
         }
         continue;
       }
-      if (attempted >= maxPages) break;
+      if (attempted >= maxPages) {
+        console.log(`[enrich] reached max pages (${maxPages}), stopping`);
+        break;
+      }
 
       const source = candidates[0]?.source;
       if (!source) continue;
@@ -220,6 +230,10 @@ export async function enrichDescriptions({
       const result = await readPage(url, previous, fetchPage);
       lastRequestAt.set(source, Date.now());
       attempted++;
+      if (result.status === "described") described++;
+      console.log(
+        `[enrich] ${attempted}/${maxPages} [${source}] ${result.status} ${url}`,
+      );
       await repository.savePage({ url, ...result });
       if (result.description) {
         await Promise.all(
@@ -233,4 +247,8 @@ export async function enrichDescriptions({
       console.error(`Could not enrich detail page ${url}:`, error);
     }
   }
+
+  console.log(
+    `[enrich] done. ${attempted} page(s) fetched (${described} described), ${reused} reused from cache.`,
+  );
 }
