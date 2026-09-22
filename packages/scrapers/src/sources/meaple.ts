@@ -47,6 +47,44 @@ function getString(value: unknown): string | undefined {
   return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
+// Block-level Slate node types that should read as separate paragraphs.
+const SLATE_BLOCK_TYPES = new Set([
+  "paragraph",
+  "heading-one",
+  "heading-two",
+  "heading-three",
+  "list-item",
+  "block-quote",
+]);
+
+function flattenSlateNode(node: unknown): string {
+  const value = getRecord(node);
+  if (typeof value.text === "string") return value.text;
+  if (!Array.isArray(value.children)) return "";
+
+  const text = value.children.map(flattenSlateNode).join("");
+  return SLATE_BLOCK_TYPES.has(getString(value.type) ?? "")
+    ? `${text}\n\n`
+    : text;
+}
+
+/** `description` is Slate rich text, not a string — flatten it to plain text. */
+function descriptionFromMeapleEvent(value: unknown): string | undefined {
+  if (!Array.isArray(value)) return undefined;
+
+  const text = value
+    .map(flattenSlateNode)
+    .join("")
+    .replace(/\r/g, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n[ \t]+/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+
+  return text || undefined;
+}
+
 function addressFromMeapleEvent(
   event: Record<string, unknown>,
 ): string | undefined {
@@ -83,6 +121,7 @@ function mapMeapleEvent(event: unknown): Record<string, unknown> {
         ? `https://meaple.com.br/${channelSlug}/${slug}`
         : undefined,
     imageUrl: getString(getRecord(value.image).url),
+    description: descriptionFromMeapleEvent(value.description),
     address: addressFromMeapleEvent(value),
     city: city ? resolveCoveredCity(city) : undefined,
     startsAt:
