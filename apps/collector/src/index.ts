@@ -30,6 +30,23 @@ function detailPageIntervalMs(): number {
   return Number.isFinite(value) && value >= 0 ? value : 1_000;
 }
 
+function selectedSources(): typeof sources {
+  const requested = process.argv.slice(2).filter((arg) => arg && arg !== "--");
+  if (requested.length === 0) return sources;
+
+  const unknown = requested.filter(
+    (id) => !sources.some((source) => source.id === id),
+  );
+  if (unknown.length > 0) {
+    const available = sources.map((source) => source.id).join(", ");
+    throw new Error(
+      `Unknown source(s): ${unknown.join(", ")}. Available: ${available}`,
+    );
+  }
+
+  return sources.filter((source) => requested.includes(source.id));
+}
+
 async function main() {
   const db = getDb();
   const collectedAt = new Date();
@@ -37,7 +54,7 @@ async function main() {
   let skipped = 0;
   const failedSources = new Set<string>();
 
-  for (const source of sources) {
+  for (const source of selectedSources()) {
     for (const city of COVERED_CITIES) {
       try {
         const { offers: rawOffers, skipped: sourceSkipped } =
