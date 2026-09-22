@@ -13,7 +13,7 @@ import {
   type DetailPageRecord,
   type DescriptionEnrichmentStore,
 } from "@repo/scrapers";
-import { eq, sql } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 
 function usefulText(value: string | undefined): string | undefined {
   const text = value?.trim();
@@ -53,6 +53,7 @@ async function main() {
   let upserted = 0;
   let skipped = 0;
   const failedSources = new Set<string>();
+  const collectedOfferIds = new Set<string>();
 
   for (const source of selectedSources()) {
     for (const city of COVERED_CITIES) {
@@ -95,6 +96,7 @@ async function main() {
               },
             });
           upserted++;
+          collectedOfferIds.add(newOffer.id);
         }
         console.log(
           `[${source.id}] ${city}: upserted ${rawOffers.length} offers, skipped ${sourceSkipped}`,
@@ -108,6 +110,7 @@ async function main() {
 
   const descriptionStore: DescriptionEnrichmentStore = {
     async listCandidates() {
+      if (collectedOfferIds.size === 0) return [];
       const rows = await db
         .select({
           id: offers.id,
@@ -115,7 +118,8 @@ async function main() {
           url: offers.url,
           descriptionOrigin: offers.descriptionOrigin,
         })
-        .from(offers);
+        .from(offers)
+        .where(inArray(offers.id, [...collectedOfferIds]));
       return rows
         .filter((offer) => needsDescriptionEnrichment(offer.descriptionOrigin))
         .map(({ id, source, url }) => ({ id, source, url }));
