@@ -22,6 +22,13 @@
       "when": 1790035000000,
       "tag": "0002_fresh_detail_pages",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790050752741,
+      "tag": "0003_drop_offer_price_columns",
+      "breakpoints": true
     }
   ]
 }
