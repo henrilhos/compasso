@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@repo/db": "workspace:*",
-    "@repo/scrapers": "workspace:*"
+    "@repo/scrapers": "workspace:*",
+    "drizzle-orm": "^0.45.3"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
