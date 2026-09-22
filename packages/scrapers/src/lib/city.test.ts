@@ -4,6 +4,7 @@ import { resolveCoveredCity } from "./city";
 describe("resolveCoveredCity", () => {
   it("resolves an exact canonical name", () => {
     expect(resolveCoveredCity("Joinville")).toBe("Joinville");
+    expect(resolveCoveredCity("Curitiba")).toBe("Curitiba");
   });
 
   it("is case- and accent-insensitive", () => {
@@ -27,7 +28,6 @@ describe("resolveCoveredCity", () => {
 
   it("returns undefined for a city outside the covered list", () => {
     expect(resolveCoveredCity("Pomerode")).toBeUndefined();
-    expect(resolveCoveredCity("Curitiba")).toBeUndefined();
     expect(resolveCoveredCity("Dublin")).toBeUndefined();
   });
 
