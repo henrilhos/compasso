@@ -115,8 +115,20 @@ export function extractDetailDescription(html: string): string | undefined {
   const section = $(
     "#description, [data-testid*='description' i], [class*='description' i], [id*='description' i]",
   ).first();
-  const description = readableText(section.html() ?? undefined);
-  if (description) return description;
+  if (section.length > 0) {
+    const isLabel = /^(h[1-6]|label|legend)$/i.test(
+      String(section.prop("tagName") ?? ""),
+    );
+    // Some pages (e.g. Sympla) match a heading like "Descrição do evento"
+    // rather than the content itself; the real text sits in a sibling.
+    const targets = isLabel
+      ? [section.next(), section.parent().next()]
+      : [section];
+    for (const target of targets) {
+      const description = readableText(target.html() ?? undefined);
+      if (description) return description;
+    }
+  }
 
   // Last resort: many event pages (e.g. Next.js apps) never set og:type to
   // "event" or use Event microdata, so gating on those signals discards a
