@@ -54,15 +54,12 @@ describe("parseEventbriteSearchResponse", () => {
 });
 
 describe("eventbriteSource", () => {
-  it("performs the CSRF handshake and maps a covered event", async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce(
-        new Response("<html>", {
-          headers: { "set-cookie": "csrftoken=csrf-token; Path=/" },
-        }),
-      )
-      .mockResolvedValueOnce(
+  it("searches without a page handshake and maps a covered event", async () => {
+    const fetchMock = vi.fn().mockImplementation((url: string) => {
+      if (url !== "https://www.eventbrite.com.br/api/v3/destination/search/") {
+        return Promise.resolve(new Response("Method Not Allowed", { status: 405 }));
+      }
+      return Promise.resolve(
         Response.json({
           events: {
             results: [event, leakedEvent],
@@ -70,6 +67,7 @@ describe("eventbriteSource", () => {
           },
         }),
       );
+    });
     vi.stubGlobal("fetch", fetchMock);
 
     const result = await eventbriteSource.fetchOffers("Joinville");
@@ -92,10 +90,12 @@ describe("eventbriteSource", () => {
       ],
     });
 
-    const [, postInit] = fetchMock.mock.calls[1] ?? [];
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [, postInit] = fetchMock.mock.calls[0] ?? [];
     const headers = new Headers(postInit?.headers);
-    expect(headers.get("X-CSRFToken")).toBe("csrf-token");
-    expect(headers.get("Cookie")).toBe("csrftoken=csrf-token");
+    const token = headers.get("X-CSRFToken");
+    expect(token).toMatch(/^[a-f0-9]{32}$/);
+    expect(headers.get("Cookie")).toBe(`csrftoken=${token}`);
     expect(JSON.parse(String(postInit?.body))).toMatchObject({
       event_search: {
         places: ["101964301"],
