@@ -1,25 +1,25 @@
 import { describe, expect, it } from "vitest";
 
-import { getSelectedCity } from "./city-filter";
+import { getSelectedCities } from "./city-filter";
 
-describe("getSelectedCity", () => {
-  it("defaults to Joinville when no city is selected", () => {
-    expect(getSelectedCity(undefined)).toBe("Joinville");
+describe("getSelectedCities", () => {
+  it("uses all cities when none is selected", () => {
+    expect(getSelectedCities(undefined)).toEqual([]);
   });
 
   it("accepts a covered city from the query string", () => {
-    expect(getSelectedCity("Florianópolis")).toBe("Florianópolis");
+    expect(getSelectedCities("Florianópolis")).toEqual(["Florianópolis"]);
   });
 
-  it("uses all cities when the all option is selected", () => {
-    expect(getSelectedCity("all")).toBe("all");
+  it("ignores unknown cities and the old all value", () => {
+    expect(getSelectedCities("Pomerode")).toEqual([]);
+    expect(getSelectedCities(["all", "Itajaí"])).toEqual(["Itajaí"]);
   });
 
-  it("falls back to Joinville for an unknown city", () => {
-    expect(getSelectedCity("Pomerode")).toBe("Joinville");
-  });
-
-  it("uses the first query value when the parameter is repeated", () => {
-    expect(getSelectedCity(["Itajaí", "Pomerode"])).toBe("Itajaí");
+  it("keeps covered cities from repeated parameters without duplicates", () => {
+    expect(getSelectedCities(["Itajaí", "Pomerode", "Joinville", "Itajaí"])).toEqual([
+      "Joinville",
+      "Itajaí",
+    ]);
   });
 });
