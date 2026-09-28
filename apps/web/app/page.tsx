@@ -1,6 +1,7 @@
 import { and, asc, eq, gte, ilike, inArray, lt, or } from "drizzle-orm";
 import { COVERED_CITIES, getDb, offers } from "@repo/db";
 import { getSelectedCities, type CityFilter } from "./city-filter";
+import { MultiSelectFilter } from "./multi-select-filter";
 import {
   getSelectedCulturalEventFilter,
   type CulturalEventFilter,
@@ -167,26 +168,15 @@ export default async function Home({
           />
         </div>
         <div className="filterGrid">
-          <div className="filterField">
-            <label htmlFor="city">Cidade</label>
-            <select
-              id="city"
-              name="city"
-              multiple
-              size={Math.min(COVERED_CITIES.length, 4)}
-              defaultValue={selectedCities}
-              aria-describedby="cityHint"
-            >
-              {COVERED_CITIES.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-            <span id="cityHint" className="filterHint">
-              Selecione várias com Ctrl/⌘. Nenhuma seleção mostra todas.
-            </span>
-          </div>
+          <MultiSelectFilter
+            key={`city:${selectedCities.join("|")}`}
+            id="city"
+            label="Cidade"
+            name="city"
+            options={COVERED_CITIES}
+            selectedValues={selectedCities}
+            allLabel="Todas as cidades"
+          />
           <div className="filterField">
             <label htmlFor="period">Quando</label>
             <select id="period" name="period" defaultValue={selectedPeriod}>
@@ -209,26 +199,15 @@ export default async function Home({
               <option value="not_cultural">Somente não culturais</option>
             </select>
           </div>
-          <div className="filterField">
-            <label htmlFor="source">Fonte</label>
-            <select
-              id="source"
-              name="source"
-              multiple
-              size={Math.min(Math.max(availableSources.length, 2), 4)}
-              defaultValue={selectedSources}
-              aria-describedby="sourceHint"
-            >
-              {availableSources.map((source) => (
-                <option key={source} value={source}>
-                  {source}
-                </option>
-              ))}
-            </select>
-            <span id="sourceHint" className="filterHint">
-              Selecione várias com Ctrl/⌘. Nenhuma seleção mostra todas.
-            </span>
-          </div>
+          <MultiSelectFilter
+            key={`source:${selectedSources.join("|")}`}
+            id="source"
+            label="Fonte"
+            name="source"
+            options={availableSources}
+            selectedValues={selectedSources}
+            allLabel="Todas as fontes"
+          />
         </div>
         <div className="filterActions">
           <button type="submit">Mostrar eventos</button>
