@@ -2,30 +2,31 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type MultiSelectFilterProps = {
+type SingleSelectFilterProps = {
   id: string;
   label: string;
   name: string;
-  options: readonly string[];
-  selectedValues: string[];
-  allLabel: string;
+  options: readonly { value: string; label: string }[];
+  selectedValue: string;
 };
 
-export function MultiSelectFilter({
+export function SingleSelectFilter({
   id,
   label,
   name,
   options,
-  selectedValues,
-  allLabel,
-}: MultiSelectFilterProps) {
-  const [selected, setSelected] = useState(selectedValues);
+  selectedValue,
+}: SingleSelectFilterProps) {
+  const [selected, setSelected] = useState(selectedValue);
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const selectedInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open) return;
+
+    selectedInputRef.current?.focus();
 
     function closeOnOutsideClick(event: PointerEvent) {
       if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
@@ -46,13 +47,6 @@ export function MultiSelectFilter({
     };
   }, [open]);
 
-  const summary =
-    selected.length === 0
-      ? allLabel
-      : selected.length === 1
-        ? selected[0]
-        : `${selected[0]} +${selected.length - 1}`;
-
   return (
     <div className="filterField filterDropdown" ref={rootRef}>
       <label htmlFor={id}>{label}</label>
@@ -64,34 +58,32 @@ export function MultiSelectFilter({
         aria-expanded={open}
         aria-controls={`${id}-options`}
         onClick={() => setOpen((current) => !current)}
-        disabled={options.length === 0}
       >
-        <span>{summary}</span>
+        <span>{options.find((option) => option.value === selected)?.label}</span>
         <span className="filterChevron" aria-hidden="true" />
       </button>
       <div
         id={`${id}-options`}
         className="filterMenu"
-        role="group"
-        aria-label={`Selecionar ${label.toLowerCase()}`}
+        role="radiogroup"
+        aria-label={label}
         hidden={!open}
       >
         {options.map((option) => (
-          <label key={option} className="filterOption">
+          <label key={option.value} className="filterOption">
             <input
-              type="checkbox"
+              ref={option.value === selected ? selectedInputRef : undefined}
+              type="radio"
               name={name}
-              value={option}
-              checked={selected.includes(option)}
-              onChange={() =>
-                setSelected((current) =>
-                  current.includes(option)
-                    ? current.filter((value) => value !== option)
-                    : [...current, option],
-                )
-              }
+              value={option.value}
+              checked={selected === option.value}
+              onChange={() => {
+                setSelected(option.value);
+                setOpen(false);
+                triggerRef.current?.focus();
+              }}
             />
-            <span>{option}</span>
+            <span>{option.label}</span>
           </label>
         ))}
       </div>
