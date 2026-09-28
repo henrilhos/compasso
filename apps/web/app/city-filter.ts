@@ -1,16 +1,11 @@
 import { COVERED_CITIES, type CoveredCity } from "@repo/db";
 
-export type CityFilter = CoveredCity | "all";
+export type CityFilter = CoveredCity[];
 
-export function getSelectedCity(
+export function getSelectedCities(
   value: string | string[] | undefined,
 ): CityFilter {
-  const candidate = Array.isArray(value) ? value[0] : value;
+  const candidates = new Set(value === undefined ? [] : [value].flat());
 
-  if (candidate === "all") return "all";
-  if (candidate && COVERED_CITIES.includes(candidate as CoveredCity)) {
-    return candidate as CoveredCity;
-  }
-
-  return "Joinville";
+  return COVERED_CITIES.filter((city) => candidates.has(city));
 }

@@ -104,6 +104,20 @@ select {
 .filterField input::placeholder {
   color: #888;
 }
+.filterField select[multiple] {
+  height: auto;
+  min-height: 72px;
+  padding: 4px;
+}
+.filterField select[multiple] option {
+  padding: 5px 8px;
+}
+.filterHint {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
 .filterField input:focus-visible,
 .filterField select:focus-visible,
 .filterActions button:focus-visible,

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   getSearchTerm,
   getSelectedPeriod,
-  getSelectedSource,
+  getSelectedSources,
 } from "./offer-filters";
 
 describe("offer filters", () => {
@@ -17,8 +17,14 @@ describe("offer filters", () => {
     expect(getSearchTerm("x".repeat(150))).toHaveLength(100);
   });
 
-  it("only accepts sources currently available", () => {
-    expect(getSelectedSource("sympla", ["sympla", "meaple"])).toBe("sympla");
-    expect(getSelectedSource("unknown", ["sympla"])).toBe("all");
+  it("keeps only available sources from repeated URL parameters", () => {
+    expect(
+      getSelectedSources(
+        ["meaple", "unknown", "sympla", "meaple"],
+        ["sympla", "meaple"],
+      ),
+    ).toEqual(["sympla", "meaple"]);
+    expect(getSelectedSources("unknown", ["sympla"])).toEqual([]);
+    expect(getSelectedSources(undefined, ["sympla"])).toEqual([]);
   });
 });
