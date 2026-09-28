@@ -18,6 +18,7 @@ import {
 export const dynamic = "force-dynamic";
 
 const STALE_AFTER_DAYS = 3;
+const NEW_FOR_DAYS = 7;
 const TIME_ZONE = "America/Sao_Paulo";
 
 function formatDate(date: Date) {
@@ -124,8 +125,12 @@ export default async function Home({
   const selectedCulturalEvent = getSelectedCulturalEventFilter(params.cultural);
   const selectedPeriod = getSelectedPeriod(params.period);
   const search = getSearchTerm(params.search);
-  const staleCutoff = new Date();
+  const now = new Date();
+  const staleCutoff = new Date(now);
   staleCutoff.setDate(staleCutoff.getDate() - STALE_AFTER_DAYS);
+  const newCutoff = new Date(
+    now.getTime() - NEW_FOR_DAYS * 24 * 60 * 60 * 1000,
+  );
   const availableSources = await getAvailableSources(staleCutoff);
   const selectedSources = getSelectedSources(params.source, availableSources);
   const upcomingOffers = await getUpcomingOffers(
@@ -245,7 +250,12 @@ export default async function Home({
                     {formatTime(offer.startsAt)}
                   </time>
                   <span className="eventBody">
-                    <strong>{offer.title}</strong>
+                    <strong>
+                      {offer.title}
+                      {offer.createdAt >= newCutoff && (
+                        <small className="newBadge">Novo</small>
+                      )}
+                    </strong>
                     <span>
                       {[offer.venueName, offer.city]
                         .filter(Boolean)
