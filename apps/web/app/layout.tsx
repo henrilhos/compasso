@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Compasso — Agenda de eventos de Joinville",
+  title: "Compasso | Agenda de eventos",
   description:
-    "Eventos e shows de Joinville e região, reunidos de vários sites de ingresso.",
+    "Eventos e shows das cidades cobertas, reunidos de vários sites de ingresso.",
 };
 
 export default function RootLayout({
