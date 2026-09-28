@@ -2,6 +2,7 @@ import { and, asc, eq, gte, ilike, inArray, lt, or } from "drizzle-orm";
 import { COVERED_CITIES, getDb, offers } from "@repo/db";
 import { getSelectedCities, type CityFilter } from "./city-filter";
 import { MultiSelectFilter } from "./multi-select-filter";
+import { SingleSelectFilter } from "./single-select-filter";
 import {
   getSelectedCulturalEventFilter,
   type CulturalEventFilter,
@@ -177,34 +178,27 @@ export default async function Home({
             selectedValues={selectedCities}
             allLabel="Todas as cidades"
           />
-          <div className="filterField">
-            <label htmlFor="period">Quando</label>
-            <div className="filterSelect">
-              <select id="period" name="period" defaultValue={selectedPeriod}>
-                {PERIOD_OPTIONS.map((days) => (
-                  <option key={days} value={days}>
-                    Próximos {days} dias
-                  </option>
-                ))}
-              </select>
-              <span className="filterChevron" aria-hidden="true" />
-            </div>
-          </div>
-          <div className="filterField">
-            <label htmlFor="cultural">Tipo</label>
-            <div className="filterSelect">
-              <select
-                id="cultural"
-                name="cultural"
-                defaultValue={selectedCulturalEvent}
-              >
-                <option value="all">Todos os eventos</option>
-                <option value="cultural">Somente culturais</option>
-                <option value="not_cultural">Somente não culturais</option>
-              </select>
-              <span className="filterChevron" aria-hidden="true" />
-            </div>
-          </div>
+          <SingleSelectFilter
+            id="period"
+            label="Quando"
+            name="period"
+            options={PERIOD_OPTIONS.map((days) => ({
+              value: String(days),
+              label: `Próximos ${days} dias`,
+            }))}
+            selectedValue={String(selectedPeriod)}
+          />
+          <SingleSelectFilter
+            id="cultural"
+            label="Tipo"
+            name="cultural"
+            options={[
+              { value: "all", label: "Todos os eventos" },
+              { value: "cultural", label: "Somente culturais" },
+              { value: "not_cultural", label: "Somente não culturais" },
+            ]}
+            selectedValue={selectedCulturalEvent}
+          />
           <MultiSelectFilter
             key={`source:${selectedSources.join("|")}`}
             id="source"
