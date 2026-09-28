@@ -18,10 +18,10 @@ export function getSearchTerm(value: string | string[] | undefined) {
   return (first(value) ?? "").trim().slice(0, 100);
 }
 
-export function getSelectedSource(
+export function getSelectedSources(
   value: string | string[] | undefined,
   availableSources: string[],
 ) {
-  const candidate = first(value);
-  return candidate && availableSources.includes(candidate) ? candidate : "all";
+  const candidates = new Set(value === undefined ? [] : [value].flat());
+  return availableSources.filter((source) => candidates.has(source));
 }

@@ -1,6 +1,6 @@
-import { and, asc, eq, gte, ilike, lt, or } from "drizzle-orm";
+import { and, asc, eq, gte, ilike, inArray, lt, or } from "drizzle-orm";
 import { COVERED_CITIES, getDb, offers } from "@repo/db";
-import { getSelectedCity, type CityFilter } from "./city-filter";
+import { getSelectedCities, type CityFilter } from "./city-filter";
 import {
   getSelectedCulturalEventFilter,
   type CulturalEventFilter,
@@ -8,7 +8,7 @@ import {
 import {
   getSearchTerm,
   getSelectedPeriod,
-  getSelectedSource,
+  getSelectedSources,
   PERIOD_OPTIONS,
   type PeriodFilter,
 } from "./offer-filters";
@@ -61,10 +61,10 @@ async function getAvailableSources(staleCutoff: Date) {
 }
 
 async function getUpcomingOffers(
-  city: CityFilter,
+  cities: CityFilter,
   culturalEvent: CulturalEventFilter,
   period: PeriodFilter,
-  source: string,
+  sources: string[],
   search: string,
   staleCutoff: Date,
 ) {
@@ -79,11 +79,11 @@ async function getUpcomingOffers(
         gte(offers.startsAt, start),
         lt(offers.startsAt, end),
         gte(offers.lastSeenAt, staleCutoff),
-        city !== "all" ? eq(offers.city, city) : undefined,
+        cities.length > 0 ? inArray(offers.city, cities) : undefined,
         culturalEvent !== "all"
           ? eq(offers.isCulturalEvent, culturalEvent === "cultural")
           : undefined,
-        source !== "all" ? eq(offers.source, source) : undefined,
+        sources.length > 0 ? inArray(offers.source, sources) : undefined,
         search
           ? or(
               ilike(offers.title, searchPattern),
@@ -118,19 +118,19 @@ export default async function Home({
   }>;
 }) {
   const params = await searchParams;
-  const selectedCity = getSelectedCity(params.city);
+  const selectedCities = getSelectedCities(params.city);
   const selectedCulturalEvent = getSelectedCulturalEventFilter(params.cultural);
   const selectedPeriod = getSelectedPeriod(params.period);
   const search = getSearchTerm(params.search);
   const staleCutoff = new Date();
   staleCutoff.setDate(staleCutoff.getDate() - STALE_AFTER_DAYS);
   const availableSources = await getAvailableSources(staleCutoff);
-  const selectedSource = getSelectedSource(params.source, availableSources);
+  const selectedSources = getSelectedSources(params.source, availableSources);
   const upcomingOffers = await getUpcomingOffers(
-    selectedCity,
+    selectedCities,
     selectedCulturalEvent,
     selectedPeriod,
-    selectedSource,
+    selectedSources,
     search,
     staleCutoff,
   );
@@ -145,7 +145,11 @@ export default async function Home({
         </div>
         <h1>
           O que acontece{" "}
-          {selectedCity === "all" ? "por aqui" : `em ${selectedCity}`}
+          {selectedCities.length === 0
+            ? "por aqui"
+            : selectedCities.length === 1
+              ? `em ${selectedCities[0]}`
+              : `em ${selectedCities.length} cidades`}
         </h1>
         <p>Eventos reunidos de várias plataformas.</p>
       </header>
@@ -165,14 +169,23 @@ export default async function Home({
         <div className="filterGrid">
           <div className="filterField">
             <label htmlFor="city">Cidade</label>
-            <select id="city" name="city" defaultValue={selectedCity}>
-              <option value="all">Todas as cidades</option>
+            <select
+              id="city"
+              name="city"
+              multiple
+              size={Math.min(COVERED_CITIES.length, 4)}
+              defaultValue={selectedCities}
+              aria-describedby="cityHint"
+            >
               {COVERED_CITIES.map((city) => (
                 <option key={city} value={city}>
                   {city}
                 </option>
               ))}
             </select>
+            <span id="cityHint" className="filterHint">
+              Selecione várias com Ctrl/⌘. Nenhuma seleção mostra todas.
+            </span>
           </div>
           <div className="filterField">
             <label htmlFor="period">Quando</label>
@@ -198,14 +211,23 @@ export default async function Home({
           </div>
           <div className="filterField">
             <label htmlFor="source">Fonte</label>
-            <select id="source" name="source" defaultValue={selectedSource}>
-              <option value="all">Todas as fontes</option>
+            <select
+              id="source"
+              name="source"
+              multiple
+              size={Math.min(Math.max(availableSources.length, 2), 4)}
+              defaultValue={selectedSources}
+              aria-describedby="sourceHint"
+            >
               {availableSources.map((source) => (
                 <option key={source} value={source}>
                   {source}
                 </option>
               ))}
             </select>
+            <span id="sourceHint" className="filterHint">
+              Selecione várias com Ctrl/⌘. Nenhuma seleção mostra todas.
+            </span>
           </div>
         </div>
         <div className="filterActions">
