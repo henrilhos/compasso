@@ -67,7 +67,7 @@ export function MultiSelectFilter({
         disabled={options.length === 0}
       >
         <span>{summary}</span>
-        <span className="multiSelectChevron" aria-hidden="true" />
+        <span className="filterChevron" aria-hidden="true" />
       </button>
       <div
         id={`${id}-options`}

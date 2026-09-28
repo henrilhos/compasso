@@ -104,6 +104,20 @@ select {
 .filterField input::placeholder {
   color: #888;
 }
+.filterSelect {
+  position: relative;
+}
+.filterField .filterSelect select {
+  appearance: none;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.filterSelect .filterChevron {
+  position: absolute;
+  top: calc(50% - 4px);
+  right: 12px;
+  pointer-events: none;
+}
 .multiSelect {
   position: relative;
 }
@@ -130,7 +144,7 @@ select {
 .multiSelectTrigger:disabled {
   cursor: default;
 }
-.multiSelectChevron {
+.filterChevron {
   width: 8px;
   height: 8px;
   flex: none;

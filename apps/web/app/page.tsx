@@ -179,25 +179,31 @@ export default async function Home({
           />
           <div className="filterField">
             <label htmlFor="period">Quando</label>
-            <select id="period" name="period" defaultValue={selectedPeriod}>
-              {PERIOD_OPTIONS.map((days) => (
-                <option key={days} value={days}>
-                  Próximos {days} dias
-                </option>
-              ))}
-            </select>
+            <div className="filterSelect">
+              <select id="period" name="period" defaultValue={selectedPeriod}>
+                {PERIOD_OPTIONS.map((days) => (
+                  <option key={days} value={days}>
+                    Próximos {days} dias
+                  </option>
+                ))}
+              </select>
+              <span className="filterChevron" aria-hidden="true" />
+            </div>
           </div>
           <div className="filterField">
             <label htmlFor="cultural">Tipo</label>
-            <select
-              id="cultural"
-              name="cultural"
-              defaultValue={selectedCulturalEvent}
-            >
-              <option value="all">Todos os eventos</option>
-              <option value="cultural">Somente culturais</option>
-              <option value="not_cultural">Somente não culturais</option>
-            </select>
+            <div className="filterSelect">
+              <select
+                id="cultural"
+                name="cultural"
+                defaultValue={selectedCulturalEvent}
+              >
+                <option value="all">Todos os eventos</option>
+                <option value="cultural">Somente culturais</option>
+                <option value="not_cultural">Somente não culturais</option>
+              </select>
+              <span className="filterChevron" aria-hidden="true" />
+            </div>
           </div>
           <MultiSelectFilter
             key={`source:${selectedSources.join("|")}`}
