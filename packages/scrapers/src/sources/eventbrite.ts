@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import { COVERED_CITIES, type CoveredCity } from "@repo/db";
 import {
   httpFetch,
@@ -9,7 +10,7 @@ import {
 import type { OfferSource } from "../types";
 
 /**
- * API JSON real, precedida de um handshake CSRF. Atenção:
+ * API JSON real com cookie CSRF anônimo gerado por requisição. Atenção:
  * `address.city` guarda o bairro, não a cidade. A cidade é extraída do
  * endereço localizado antes da validação do contrato comum dos scrapers.
  *
@@ -177,27 +178,14 @@ function shouldDiscardEvent(event: unknown): boolean {
   );
 }
 
-function csrfTokenFrom(response: Response): string {
-  const cookie = response.headers.get("set-cookie");
-  const token = cookie?.match(/(?:^|[,;\s])csrftoken=([^;,\s]+)/i)?.[1];
-  if (!token) {
-    throw new Error("Eventbrite did not return a CSRF token");
-  }
-  return token;
-}
-
 export const eventbriteSource: OfferSource = {
   id: "eventbrite",
   name: "Eventbrite",
   async fetchOffers(city: CoveredCity) {
     const config = CITY_CONFIG[city];
-    const handshake = await httpFetch(config.pageUrl);
-    if (!handshake.ok) {
-      throw new Error(
-        `Eventbrite handshake returned HTTP ${handshake.status} for ${config.pageUrl}`,
-      );
-    }
-    const csrfToken = csrfTokenFrom(handshake);
+    // The destination API accepts a matching anonymous CSRF cookie and header.
+    // Fetching the listing page first fails with HTTP 405 on Actions runners.
+    const csrfToken = randomBytes(16).toString("hex");
 
     const events = await paginate({
       maxPages: EVENTBRITE_MAX_PAGES,
