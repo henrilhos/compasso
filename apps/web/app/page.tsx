@@ -147,18 +147,23 @@ export default async function Home({
     <main className="page">
       <header className="header">
         <div className="brandRow">
-          <span className="brand">compasso</span>
+          <span className="brandLockup">
+            <span className="brandMark" aria-hidden="true" />
+            <span className="brand">compasso</span>
+          </span>
           <span className="brandDetail">agenda de eventos</span>
         </div>
         <h1>
           O que acontece{" "}
-          {selectedCities.length === 0
-            ? "por aqui"
-            : selectedCities.length === 1
-              ? `em ${selectedCities[0]}`
-              : `em ${selectedCities.length} cidades`}
+          <span>
+            {selectedCities.length === 0
+              ? "por aqui"
+              : selectedCities.length === 1
+                ? `em ${selectedCities[0]}`
+                : `em ${selectedCities.length} cidades`}
+          </span>
         </h1>
-        <p>Eventos reunidos de várias plataformas.</p>
+        <p>Shows, encontros e descobertas num só lugar.</p>
       </header>
 
       <form className="filters" method="get" role="search">
@@ -261,8 +266,8 @@ export default async function Home({
                         .filter(Boolean)
                         .join(" · ")}
                     </span>
+                    <span className="eventSource">{offer.source}</span>
                   </span>
-                  <span className="eventSource">{offer.source}</span>
                 </a>
               </li>
             ))}
