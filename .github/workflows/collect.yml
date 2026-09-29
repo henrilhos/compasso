@@ -30,3 +30,9 @@ jobs:
         run: pnpm --filter collector run collect
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Classify cultural events
+        run: pnpm --filter collector run classify
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TYPESAFE_AI_API_KEY: ${{ secrets.TYPESAFE_AI_API_KEY }}
