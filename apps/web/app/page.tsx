@@ -18,7 +18,7 @@ import {
 export const dynamic = "force-dynamic";
 
 const STALE_AFTER_DAYS = 3;
-const NEW_FOR_DAYS = 7;
+const NEW_FOR_DAYS = 3;
 const TIME_ZONE = "America/Sao_Paulo";
 
 function formatDate(date: Date) {
