@@ -69,3 +69,14 @@ Toda [[Oferta]] pertence a exatamente uma Cidade Coberta. As [[Fonte]]s
 devolvem resultados de fora da lista — os feeds delas são regionais e
 imprecisos — e o que não resolve para uma Cidade Coberta é descartado
 na coleta.
+
+## Novidade
+
+Uma [[Oferta]] que o Compasso viu pela primeira vez nos últimos 3 dias. É
+sobre quando o Compasso a **descobriu**, não sobre quando a [[Fonte]] a
+publicou.
+
+Por isso, quando uma Fonte ou Cidade Coberta entra pela primeira vez, todas
+as Ofertas dela são Novidade de uma vez. Isso é aceito.
+
+Na interface, o visitante vê "Novo".

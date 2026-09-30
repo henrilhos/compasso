@@ -7,6 +7,7 @@ import {
   getSelectedCulturalEventFilter,
   type CulturalEventFilter,
 } from "./cultural-event-filter";
+import { getSelectedNoveltyFilter, type NoveltyFilter } from "./novelty-filter";
 import {
   getSearchTerm,
   getSelectedPeriod,
@@ -66,10 +67,12 @@ async function getAvailableSources(staleCutoff: Date) {
 async function getUpcomingOffers(
   cities: CityFilter,
   culturalEvent: CulturalEventFilter,
+  novelty: NoveltyFilter,
   period: PeriodFilter,
   sources: string[],
   search: string,
   staleCutoff: Date,
+  newCutoff: Date,
 ) {
   const { start, end } = getPeriodBounds(period);
   const searchPattern = `%${search.replace(/[\\%_]/g, "\\$&")}%`;
@@ -86,6 +89,7 @@ async function getUpcomingOffers(
         culturalEvent !== "all"
           ? eq(offers.isCulturalEvent, culturalEvent === "cultural")
           : undefined,
+        novelty === "new" ? gte(offers.createdAt, newCutoff) : undefined,
         sources.length > 0 ? inArray(offers.source, sources) : undefined,
         search
           ? or(
@@ -115,6 +119,7 @@ export default async function Home({
   searchParams: Promise<{
     city?: string | string[];
     cultural?: string | string[];
+    novelty?: string | string[];
     period?: string | string[];
     source?: string | string[];
     search?: string | string[];
@@ -123,6 +128,7 @@ export default async function Home({
   const params = await searchParams;
   const selectedCities = getSelectedCities(params.city);
   const selectedCulturalEvent = getSelectedCulturalEventFilter(params.cultural);
+  const selectedNovelty = getSelectedNoveltyFilter(params.novelty);
   const selectedPeriod = getSelectedPeriod(params.period);
   const search = getSearchTerm(params.search);
   const now = new Date();
@@ -136,10 +142,12 @@ export default async function Home({
   const upcomingOffers = await getUpcomingOffers(
     selectedCities,
     selectedCulturalEvent,
+    selectedNovelty,
     selectedPeriod,
     selectedSources,
     search,
     staleCutoff,
+    newCutoff,
   );
   const groupedByDate = groupByDate(upcomingOffers);
 
@@ -208,6 +216,16 @@ export default async function Home({
               { value: "not_cultural", label: "Somente não culturais" },
             ]}
             selectedValue={selectedCulturalEvent}
+          />
+          <SingleSelectFilter
+            id="novelty"
+            label="Novidade"
+            name="novelty"
+            options={[
+              { value: "all", label: "Todos os eventos" },
+              { value: "new", label: "Somente novos" },
+            ]}
+            selectedValue={selectedNovelty}
           />
           <MultiSelectFilter
             key={`source:${selectedSources.join("|")}`}
