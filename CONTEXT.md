@@ -6,7 +6,7 @@ Glossário do domínio. Só vocabulário — nada de decisão de implementação
 ## Fonte
 
 Uma plataforma de venda de ingresso da qual o Compasso coleta dados
-(Blumie, Meaple, Pixta, Shotgun, Sympla, Eventbrite, Eventim). Cada Fonte tem um
+(Blumie, Meaple, Pixta, Shotgun, Sympla, Eventbrite, Eventim, Nittio). Cada Fonte tem um
 identificador estável e curto (`sympla`, `eventim`, …) que acompanha todo
 dado dela.
 
