@@ -30,6 +30,7 @@ jobs:
         run: pnpm --filter collector run collect
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
 
       - name: Classify cultural events
         run: pnpm --filter collector run classify
