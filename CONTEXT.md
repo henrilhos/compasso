@@ -54,21 +54,31 @@ Coleta é tratado como tendo sumido da Fonte.
 O horizonte de tempo que interessa: os próximos 90 dias a partir de hoje.
 Evento passado não é coletado nem exibido.
 
+## Município
+
+Um município que o Compasso coleta. É a unidade em que as [[Fonte]]s são
+consultadas (cada uma tem seu slug, id ou filtro por município) e a lista
+de `packages/db/src/municipalities.ts` é a fonte da verdade sobre quais são.
+
 ## Cidade Coberta
 
-Um município cuja agenda o Compasso exibe. A lista é fechada e explícita;
-`packages/db/src/covered-cities.ts` é sempre a fonte da verdade para saber
-quais municípios estão cobertos.
+Uma listagem da agenda: um [[Município]] principal que absorve os vizinhos
+próximos. Joinville inclui Jaraguá do Sul, Florianópolis inclui São José e
+Balneário Camboriú inclui Itajaí. `packages/db/src/covered-cities.ts` é
+sempre a fonte da verdade sobre as Cidades Cobertas e sobre qual Município
+cai em qual.
 
 O critério de entrada é **volume de eventos**, não distância de Joinville.
 Por isso Florianópolis está na lista e Araquari, que faz divisa com
-Joinville, não está. Uma cidade entra quando passa a ter oferta que
-justifique, e a lista é para ser esticada.
+Joinville, não está. Um Município entra quando passa a ter oferta que
+justifique, e a lista é para ser esticada: ele vira uma Cidade Coberta nova
+ou é absorvido por uma vizinha.
 
-Toda [[Oferta]] pertence a exatamente uma Cidade Coberta. As [[Fonte]]s
-devolvem resultados de fora da lista — os feeds delas são regionais e
-imprecisos — e o que não resolve para uma Cidade Coberta é descartado
-na coleta.
+Toda [[Oferta]] pertence a exatamente uma Cidade Coberta, e **só ela é
+guardada**: uma Oferta de Jaraguá do Sul fica registrada como Joinville. Ver
+ADR-0005. As [[Fonte]]s devolvem resultados de fora da lista — os feeds
+delas são regionais e imprecisos — e o que não resolve para um Município
+coberto é descartado na coleta.
 
 ## Novidade
 

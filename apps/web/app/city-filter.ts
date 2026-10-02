@@ -1,11 +1,11 @@
-import { MUNICIPALITIES, type Municipality } from "@repo/db";
+import { COVERED_CITIES, type CoveredCity } from "@repo/db";
 
-export type CityFilter = Municipality[];
+export type CityFilter = CoveredCity[];
 
 export function getSelectedCities(
   value: string | string[] | undefined,
 ): CityFilter {
   const candidates = new Set(value === undefined ? [] : [value].flat());
 
-  return MUNICIPALITIES.filter((city) => candidates.has(city));
+  return COVERED_CITIES.filter((city) => candidates.has(city));
 }

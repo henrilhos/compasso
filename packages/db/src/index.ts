@@ -5,6 +5,7 @@ import * as schema from "./schema";
 
 export * from "./schema";
 export * from "./municipalities";
+export * from "./covered-cities";
 
 export type Db = ReturnType<typeof createDb>;
 

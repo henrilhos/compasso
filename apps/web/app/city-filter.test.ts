@@ -13,13 +13,19 @@ describe("getSelectedCities", () => {
 
   it("ignores unknown cities and the old all value", () => {
     expect(getSelectedCities("Pomerode")).toEqual([]);
-    expect(getSelectedCities(["all", "Itajaí"])).toEqual(["Itajaí"]);
+    expect(getSelectedCities(["all", "Balneário Camboriú"])).toEqual([
+      "Balneário Camboriú",
+    ]);
   });
 
   it("keeps covered cities from repeated parameters without duplicates", () => {
-    expect(getSelectedCities(["Itajaí", "Pomerode", "Joinville", "Itajaí"])).toEqual([
-      "Joinville",
-      "Itajaí",
-    ]);
+    expect(
+      getSelectedCities([
+        "Balneário Camboriú",
+        "Pomerode",
+        "Joinville",
+        "Balneário Camboriú",
+      ]),
+    ).toEqual(["Joinville", "Balneário Camboriú"]);
   });
 });

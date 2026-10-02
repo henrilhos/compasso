@@ -9,6 +9,7 @@ export const rawOfferSchema = z.object({
   imageUrl: z.url().optional(),
   venueName: z.string().optional(),
   address: z.string().optional(),
+  /** The municipality the Source placed the offer in, not its Covered City. */
   city: z.enum(MUNICIPALITIES),
   startsAt: z.date(),
   endsAt: z.date().optional(),
