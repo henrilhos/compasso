@@ -1,4 +1,4 @@
-import { COVERED_CITIES, getDb, offers, type NewOffer } from "@repo/db";
+import { MUNICIPALITIES, getDb, offers, type NewOffer } from "@repo/db";
 import { enrichDescriptions, sources } from "@repo/scrapers";
 import { sql } from "drizzle-orm";
 import { createDescriptionStore } from "./description-store";
@@ -35,7 +35,7 @@ async function main() {
   const collectedOfferIds = new Set<string>();
 
   for (const source of selectedSources()) {
-    for (const city of COVERED_CITIES) {
+    for (const city of MUNICIPALITIES) {
       try {
         const { offers: rawOffers, skipped: sourceSkipped } =
           await source.fetchOffers(city);

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { COVERED_CITIES } from "@repo/db";
+import { MUNICIPALITIES } from "@repo/db";
 
 export const rawOfferSchema = z.object({
   sourceOfferId: z.string().min(1),
@@ -9,7 +9,7 @@ export const rawOfferSchema = z.object({
   imageUrl: z.url().optional(),
   venueName: z.string().optional(),
   address: z.string().optional(),
-  city: z.enum(COVERED_CITIES),
+  city: z.enum(MUNICIPALITIES),
   startsAt: z.date(),
   endsAt: z.date().optional(),
 });

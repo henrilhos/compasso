@@ -1,10 +1,10 @@
 import { randomBytes } from "node:crypto";
-import { COVERED_CITIES, type CoveredCity } from "@repo/db";
+import { MUNICIPALITIES, type Municipality } from "@repo/db";
 import {
   httpFetch,
   paginate,
   parseLocalDateTime,
-  resolveCoveredCity,
+  resolveMunicipality,
   validateRawOffers,
 } from "../lib";
 import type { OfferSource } from "../types";
@@ -23,7 +23,7 @@ const EVENTBRITE_PAGE_SIZE = 50;
 const EVENTBRITE_MAX_PAGES = 100;
 
 const CITY_CONFIG: Record<
-  CoveredCity,
+  Municipality,
   { pageUrl: string; placeId: string }
 > = {
   "Joinville": {
@@ -109,9 +109,9 @@ function getRecord(value: unknown): Record<string, unknown> {
     : {};
 }
 
-function cityFromAddress(address: string): CoveredCity | undefined {
+function cityFromAddress(address: string): Municipality | undefined {
   for (const part of address.split(",")) {
-    const city = resolveCoveredCity(part.trim());
+    const city = resolveMunicipality(part.trim());
     if (city) return city;
   }
 
@@ -122,7 +122,7 @@ function cityFromAddress(address: string): CoveredCity | undefined {
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .toLocaleLowerCase();
-  return COVERED_CITIES.find((city) => {
+  return MUNICIPALITIES.find((city) => {
     const normalizedCity = city
       .normalize("NFD")
       .replace(/[̀-ͯ]/g, "")
@@ -181,7 +181,7 @@ function shouldDiscardEvent(event: unknown): boolean {
 export const eventbriteSource: OfferSource = {
   id: "eventbrite",
   name: "Eventbrite",
-  async fetchOffers(city: CoveredCity) {
+  async fetchOffers(city: Municipality) {
     const config = CITY_CONFIG[city];
     // The destination API accepts a matching anonymous CSRF cookie and header.
     // Fetching the listing page first fails with HTTP 405 on Actions runners.

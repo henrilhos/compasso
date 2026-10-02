@@ -1,9 +1,9 @@
-import type { CoveredCity } from "@repo/db";
+import type { Municipality } from "@repo/db";
 import {
   httpFetch,
   paginate,
   parseDate,
-  resolveCoveredCity,
+  resolveMunicipality,
   validateRawOffers,
 } from "../lib";
 import type { OfferSource } from "../types";
@@ -79,7 +79,7 @@ function mapBlumieEvent(event: unknown): Record<string, unknown> {
         : undefined,
     imageUrl: getString(value.bannerUrl),
     venueName: getString(value.locationName),
-    city: city ? resolveCoveredCity(city) : undefined,
+    city: city ? resolveMunicipality(city) : undefined,
     startsAt:
       getString(firstDay.startDate) !== undefined
         ? parseDate(firstDay.startDate as string)
@@ -101,7 +101,7 @@ function mapBlumieEvent(event: unknown): Record<string, unknown> {
 export const blumieSource: OfferSource = {
   id: "blumie",
   name: "Blumie",
-  async fetchOffers(city: CoveredCity) {
+  async fetchOffers(city: Municipality) {
     const events = await paginate({
       maxPages: BLUMIE_MAX_PAGES,
       fetchPage: async (page) => {

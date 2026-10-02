@@ -1,10 +1,10 @@
 import { load } from "cheerio";
-import type { CoveredCity } from "@repo/db";
+import type { Municipality } from "@repo/db";
 import {
   httpFetch,
   paginate,
   parseDate,
-  resolveCoveredCity,
+  resolveMunicipality,
   validateRawOffers,
 } from "../lib";
 import type { OfferSource } from "../types";
@@ -13,7 +13,7 @@ const SYMPLA_BASE_URL = "https://www.sympla.com.br/eventos";
 const SYMPLA_MAX_PAGES = 100;
 const SYMPLA_PAGE_SIZE = 24;
 
-const CITY_SLUGS: Record<CoveredCity, string> = {
+const CITY_SLUGS: Record<Municipality, string> = {
   "Joinville": "joinville-sc",
   "Jaraguá do Sul": "jaragua-do-sul-sc",
   "Itajaí": "itajai-sc",
@@ -148,7 +148,7 @@ function mapSymplaEvent(event: unknown): Record<string, unknown> {
   const location = (value.location ?? {}) as Record<string, unknown>;
   const city =
     typeof location.city === "string"
-      ? resolveCoveredCity(location.city)
+      ? resolveMunicipality(location.city)
       : undefined;
 
   return {
@@ -183,7 +183,7 @@ function mapSymplaEvent(event: unknown): Record<string, unknown> {
 export const symplaSource: OfferSource = {
   id: "sympla",
   name: "Sympla",
-  async fetchOffers(city: CoveredCity) {
+  async fetchOffers(city: Municipality) {
     const events = await paginate({
       maxPages: SYMPLA_MAX_PAGES,
       // The feed is regional and can contain several pages without the

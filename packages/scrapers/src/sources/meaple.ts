@@ -1,9 +1,9 @@
-import type { CoveredCity } from "@repo/db";
+import type { Municipality } from "@repo/db";
 import {
   delay,
   httpFetch,
   parseDate,
-  resolveCoveredCity,
+  resolveMunicipality,
   validateRawOffers,
 } from "../lib";
 import type { OfferSource } from "../types";
@@ -123,7 +123,7 @@ function mapMeapleEvent(event: unknown): Record<string, unknown> {
     imageUrl: getString(getRecord(value.image).url),
     description: descriptionFromMeapleEvent(value.description),
     address: addressFromMeapleEvent(value),
-    city: city ? resolveCoveredCity(city) : undefined,
+    city: city ? resolveMunicipality(city) : undefined,
     startsAt:
       getString(value.startsAt) !== undefined
         ? parseDate(value.startsAt as string, timezone)
@@ -150,7 +150,7 @@ function shouldDiscardEvent(event: unknown): boolean {
 export const meapleSource: OfferSource = {
   id: "meaple",
   name: "Meaple",
-  async fetchOffers(city: CoveredCity) {
+  async fetchOffers(city: Municipality) {
     const events: unknown[] = [];
     let cursor: string | undefined;
 

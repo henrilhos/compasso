@@ -1,4 +1,4 @@
-import type { CoveredCity } from "@repo/db";
+import type { Municipality } from "@repo/db";
 import type { RawOffer } from "./lib/validation";
 
 export interface FetchOffersResult {
@@ -11,5 +11,5 @@ export interface OfferSource {
   /** Stable identifier stored in the `offers.source` column. */
   id: string;
   name: string;
-  fetchOffers(city: CoveredCity): Promise<FetchOffersResult>;
+  fetchOffers(city: Municipality): Promise<FetchOffersResult>;
 }
