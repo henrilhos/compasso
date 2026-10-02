@@ -60,7 +60,8 @@ export function needsDescriptionEnrichment(
   return descriptionOrigin !== "listing";
 }
 
-function readableText(value: string | undefined): string | undefined {
+/** Flattens an HTML fragment to plain text, keeping paragraph breaks. */
+export function readableText(value: string | undefined): string | undefined {
   if (!value) return undefined;
   const $ = load(value);
   $("br").replaceWith("\n");

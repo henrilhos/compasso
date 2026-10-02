@@ -7,8 +7,8 @@ Glossário do domínio. Só vocabulário — nada de decisão de implementação
 
 Uma plataforma de venda de ingresso da qual o Compasso coleta dados
 (Blumie, Meaple, Pixta, Shotgun, Sympla, Eventbrite, Eventim, Nittio,
-Ticketmaster, Blueticket). Cada Fonte tem um identificador estável e curto (`sympla`,
-`eventim`, …) que acompanha todo dado dela.
+Ticketmaster, Blueticket, Disk Ingressos). Cada Fonte tem um identificador estável e
+curto (`sympla`, `eventim`, …) que acompanha todo dado dela.
 
 ## Oferta
 

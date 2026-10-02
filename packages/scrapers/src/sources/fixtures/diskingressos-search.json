@@ -1,0 +1,241 @@
+{
+  "took": 1,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 6,
+    "max_score": null,
+    "hits": [
+      {
+        "_index": "home",
+        "_type": "events",
+        "_id": "3416-E",
+        "_score": null,
+        "_source": {
+          "date": "2026-10-10",
+          "data": "2026-10-11T00:00:00.000Z",
+          "city": "Curitiba",
+          "finalsale": "2026-10-11T00:40:00.000Z",
+          "description": "",
+          "hasclube": null,
+          "eventname": "TURNÊ TIM BERNARDES",
+          "openh": "2026-10-10",
+          "local": "Guairão",
+          "imagewebp": "/images/cache/events/3416.webp",
+          "uid": "3416-E",
+          "eventnameamigavel": "TURNÊ TIM BERNARDES -  -  - Guairão - Curitiba - teatro guaíra",
+          "@version": "1",
+          "initsale": "2026-08-13",
+          "initialsale": "2026-08-13T14:58:00.000Z",
+          "id": 3416,
+          "producerid": 3326,
+          "state": "PR",
+          "statusevent": 2,
+          "slug": "3416",
+          "image": "/images/cache/events/3416.jpeg",
+          "endsale": "2026-10-10",
+          "quantity": 42,
+          "groupid": 0,
+          "classification": null,
+          "openhouse": "2026-10-10 20:00:00"
+        },
+        "sort": [
+          1791676800000
+        ]
+      },
+      {
+        "_index": "home",
+        "_type": "events",
+        "_id": "3416-G",
+        "_score": null,
+        "_source": {
+          "date": "2026-11-06",
+          "data": "2026-11-06T02:00:00.000Z",
+          "city": "Curitiba",
+          "finalsale": "2026-11-07T01:00:00.000Z",
+          "description": "",
+          "hasclube": "ClubeDisk",
+          "eventname": "Peça Teatral O VENDEDOR DE SONHOS de AUGUSTO CURY",
+          "openh": "2026-11-06",
+          "local": "Teatro Fernanda Montenegro",
+          "imagewebp": "/images/cache/groups/3416.webp",
+          "uid": "3416-G",
+          "eventnameamigavel": "Peça Teatral O VENDEDOR DE SONHOS de AUGUSTO CURY -  -  - Teatro Fernanda Montenegro - Curitiba - ",
+          "@version": "1",
+          "initsale": "2026-11-06",
+          "initialsale": "2026-11-06T02:00:00.000Z",
+          "id": 0,
+          "producerid": 931,
+          "state": "PR",
+          "statusevent": 2,
+          "slug": "3416",
+          "image": "/images/cache/groups/3416.jpeg",
+          "endsale": "2026-11-06",
+          "quantity": 1,
+          "groupid": 3416,
+          "classification": null,
+          "openhouse": "01-01-0001 00:00:00"
+        },
+        "sort": [
+          1793930400000
+        ]
+      },
+      {
+        "_index": "home",
+        "_type": "events",
+        "_id": "2601-G",
+        "_score": null,
+        "_source": {
+          "date": "2026-09-30",
+          "data": "2026-09-30T03:00:00.000Z",
+          "city": "Curitiba",
+          "finalsale": "2026-11-01T01:00:00.000Z",
+          "description": "ÓPERA;ARAME;PEDREIRA;RUADAMÚSICA;PARQUEJAIMELERNER;OPERADEARAME",
+          "hasclube": null,
+          "eventname": "Experiencia Música e Natureza",
+          "openh": "2026-10-31",
+          "local": "Parque Jaime Lerner",
+          "imagewebp": "/images/cache/groups/2601.webp",
+          "uid": "2601-G",
+          "eventnameamigavel": "Experiencia Música e Natureza - ÓPERA;ARAME;PEDREIRA;RUADAMÚSICA;PARQUEJAIMELERNER;OPERADEARAME -  - Parque Jaime Lerner - Curitiba - ",
+          "@version": "1",
+          "initsale": "2026-09-30",
+          "initialsale": "2026-09-30T03:00:00.000Z",
+          "id": 0,
+          "producerid": 3435,
+          "state": "PR",
+          "statusevent": 2,
+          "slug": "2601",
+          "image": "/images/cache/groups/2601.jpeg",
+          "endsale": "2026-10-31",
+          "quantity": 1,
+          "groupid": 2601,
+          "classification": null,
+          "openhouse": "01-01-0001 00:00:00"
+        },
+        "sort": [
+          1790737200000
+        ]
+      },
+      {
+        "_index": "home",
+        "_type": "events",
+        "_id": "4028-E",
+        "_score": null,
+        "_source": {
+          "date": "2026-10-12",
+          "data": "2026-10-12T19:00:00.000Z",
+          "city": "CURITIBA",
+          "finalsale": "2026-10-12T19:40:00.000Z",
+          "description": "<p>O Baile Zum Zum Zum é o show festa escolhido para comemorar o Dia das Crianças.<br />A Banda Teatro Tupi Pererê vai tocar e cantar o cancioneiro popular, MPB e as canções autorais.</p>",
+          "hasclube": "ClubeDisk",
+          "eventname": "Baile ZUM ZUM ZUM do Tupi Pererê",
+          "openh": "2026-10-12",
+          "local": "ESPAÇO FANTÁSTICO DAS ARTES",
+          "imagewebp": "/images/cache/events/4028.webp",
+          "uid": "4028-E",
+          "eventnameamigavel": "Baile ZUM ZUM ZUM do Tupi Pererê -  -  - ESPAÇO FANTÁSTICO DAS ARTES - CURITIBA - ",
+          "@version": "1",
+          "initsale": "2026-09-19",
+          "initialsale": "2026-09-19T16:08:09.000Z",
+          "id": 4028,
+          "producerid": 2395,
+          "state": "PR",
+          "statusevent": 2,
+          "slug": "4028",
+          "image": "/images/cache/events/4028.jpeg",
+          "endsale": "2026-10-12",
+          "quantity": 136,
+          "groupid": 0,
+          "classification": null,
+          "openhouse": "2026-10-12 15:00:00"
+        },
+        "sort": [
+          1791831600000
+        ]
+      },
+      {
+        "_index": "home",
+        "_type": "events",
+        "_id": "3675-E",
+        "_score": null,
+        "_source": {
+          "date": "2026-10-10",
+          "data": "2026-10-10T13:00:00.000Z",
+          "city": " ",
+          "finalsale": "2026-10-10T13:00:00.000Z",
+          "description": "\r\n<p>O The Twelve Beers &eacute; um evento onde voc&ecirc; toma 12 cervejas artesanais diferentes em 12 dos melhores bares, tudo isso em 12 horas fant&aacute;sticas.</p>\r\n<p>Cada participante recebe um &ldquo;kit&rdquo; com um mapa, uma caneca e 12 tickets para trocar pelas cervejas. O mapa mostra onde encontrar cada umas das 12 cervejas, endere&ccedil;o e hor&aacute;rio de funcionamento dos bares e outras informa&ccedil;&otilde;es relevantes.</p>\r\n<p>O trajeto &eacute; livre, cada participante escolhe o seu pr&oacute;prio itiner&aacute;rio, que &eacute; pra ser feito a p&eacute; mesmo, e n&atilde;o passa de uma milha. &Eacute; a &ldquo;Golden Mile&rdquo; da cerveja artesanal.</p>\r\n<p>[tag-date] 09 a 11 de Outubro/2026[/tag-date]</p>\r\n",
+          "hasclube": null,
+          "eventname": "TWELVE BEERS RIO DE JANEIRO | Edição 3 - Circuito Botafogo",
+          "openh": "2026-10-10",
+          "local": "CIRCUITO BOTAFOGO",
+          "imagewebp": "/images/cache/events/3675.webp",
+          "uid": "3675-E",
+          "eventnameamigavel": "TWELVE BEERS RIO DE JANEIRO | Edição 3 - Circuito Botafogo -  -  - CIRCUITO BOTAFOGO -   - ",
+          "@version": "1",
+          "initsale": "2026-02-04",
+          "initialsale": "2026-02-04T17:54:51.000Z",
+          "id": 3675,
+          "producerid": 2084,
+          "state": "RJ",
+          "statusevent": 2,
+          "slug": "3675",
+          "image": "/images/cache/events/3675.jpeg",
+          "endsale": "2026-10-10",
+          "quantity": 9,
+          "groupid": 0,
+          "classification": null,
+          "openhouse": "2026-10-10 10:00:00"
+        },
+        "sort": [
+          1791637200000
+        ]
+      },
+      {
+        "_index": "home",
+        "_type": "events",
+        "_id": "3647-E",
+        "_score": null,
+        "_source": {
+          "date": "2026-12-15",
+          "data": "2026-12-15T22:00:00.000Z",
+          "city": "Florianópolis",
+          "finalsale": "2026-12-15T22:40:00.000Z",
+          "description": "<p style=\"text-align: center; line-height: 15.75pt;\" align=\"center\"><span style=\"font-size: 10.5pt; font-family: 'Helvetica',sans-serif; color: #777777;\">\"Alunos em Cena\" é o espetáculo de encerramento do ano da Escola de Dança Aline Mombelli, uma apresentação que celebra a dedicação, a evolução e o talento de nossos alunos ao longo da temporada.<br /> <br /> Nesta noite especial, o palco será tomado por coreografias preparadas com muito carinho, reunindo diferentes estilos e faixas etárias em um espetáculo repleto de criatividade, arte e paixão pela dança.<br /> <br /> Garanta seu ingresso e venha viver conosco uma noite inesquecível de dança, emoção e muitos aplausos!</span></p>",
+          "hasclube": null,
+          "eventname": "Alunos em Cena",
+          "openh": "2026-12-15",
+          "local": "Teatro Gov. Pedro Ivo",
+          "imagewebp": "/images/cache/events/3647.webp",
+          "uid": "3647-E",
+          "eventnameamigavel": "Alunos em Cena -  -  - Teatro Gov. Pedro Ivo - Florianópolis - ",
+          "@version": "1",
+          "initsale": "2026-07-29",
+          "initialsale": "2026-07-29T16:54:43.000Z",
+          "id": 3647,
+          "producerid": 3207,
+          "state": "SC",
+          "statusevent": 2,
+          "slug": "3647",
+          "image": "/images/cache/events/3647.jpeg",
+          "endsale": "2026-12-15",
+          "quantity": 481,
+          "groupid": 0,
+          "classification": [
+            "DANÇA",
+            "INFANTIL",
+            "MUSICAL"
+          ],
+          "openhouse": "2026-12-15 19:30:00"
+        },
+        "sort": [
+          1797372000000
+        ]
+      }
+    ]
+  }
+}
