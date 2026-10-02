@@ -1,4 +1,4 @@
-import { COVERED_CITIES, type CoveredCity } from "@repo/db";
+import { MUNICIPALITIES, type Municipality } from "@repo/db";
 import { httpFetch, paginate, parseDate, validateRawOffers } from "../lib";
 import type { OfferSource } from "../types";
 
@@ -20,9 +20,9 @@ interface Coordinates {
 }
 
 // Ticketmaster's Brazilian venues almost never carry a city name, only
-// coordinates. A venue belongs to the Covered City whose center is nearest,
+// coordinates. A venue belongs to the Municipality whose center is nearest,
 // within `CITY_RADIUS_KM`, so a venue between two cities is returned once.
-const CITY_CENTERS: Record<CoveredCity, Coordinates> = {
+const CITY_CENTERS: Record<Municipality, Coordinates> = {
   Joinville: { latitude: -26.3045, longitude: -48.8487 },
   "Jaraguá do Sul": { latitude: -26.4851, longitude: -49.0662 },
   Itajaí: { latitude: -26.9078, longitude: -48.6619 },
@@ -83,9 +83,9 @@ function distanceKm(a: Coordinates, b: Coordinates): number {
   return 2 * 6371 * Math.asin(Math.sqrt(h));
 }
 
-function nearestCoveredCity(venue: Coordinates): CoveredCity | undefined {
-  let nearest: { city: CoveredCity; distance: number } | undefined;
-  for (const city of COVERED_CITIES) {
+function nearestMunicipality(venue: Coordinates): Municipality | undefined {
+  let nearest: { city: Municipality; distance: number } | undefined;
+  for (const city of MUNICIPALITIES) {
     const distance = distanceKm(venue, CITY_CENTERS[city]);
     if (
       distance <= CITY_RADIUS_KM &&
@@ -142,7 +142,7 @@ function mapTicketmasterEvent(event: unknown): Record<string, unknown> {
     imageUrl: pickImage(value.images),
     venueName: getString(venue.name),
     address: address || undefined,
-    city: coordinates ? nearestCoveredCity(coordinates) : undefined,
+    city: coordinates ? nearestMunicipality(coordinates) : undefined,
     startsAt: startsAt ? parseDate(startsAt) : undefined,
   };
 }
@@ -161,14 +161,14 @@ function isoWithoutMillis(date: Date): string {
 
 /**
  * Official Discovery API, which needs `TICKETMASTER_API_KEY`. The query is a
- * radius around each Covered City's center and the Janela goes in the
+ * radius around each Municipality's center and the Janela goes in the
  * request; the city of each event is then settled locally, see
  * `CITY_CENTERS`. The key travels in the URL, so URLs are never logged.
  */
 export const ticketmasterSource: OfferSource = {
   id: "ticketmaster",
   name: "Ticketmaster",
-  async fetchOffers(city: CoveredCity) {
+  async fetchOffers(city: Municipality) {
     const apiKey = process.env.TICKETMASTER_API_KEY;
     if (!apiKey) {
       throw new Error("TICKETMASTER_API_KEY is not set");
