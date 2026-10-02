@@ -1,4 +1,4 @@
-import type { CoveredCity } from "@repo/db";
+import type { Municipality } from "@repo/db";
 import type { OfferSource } from "../types";
 
 /**
@@ -12,7 +12,7 @@ import type { OfferSource } from "../types";
 export const shotgunSource: OfferSource = {
   id: "shotgun",
   name: "Shotgun",
-  async fetchOffers(_city: CoveredCity) {
+  async fetchOffers(_city: Municipality) {
     throw new Error("shotgun scraper not implemented yet");
   },
 };

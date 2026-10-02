@@ -1,10 +1,10 @@
 import { load } from "cheerio";
-import type { CoveredCity } from "@repo/db";
+import type { Municipality } from "@repo/db";
 import {
   httpFetch,
   paginate,
   parseDate,
-  resolveCoveredCity,
+  resolveMunicipality,
   validateRawOffers,
 } from "../lib";
 import type { OfferSource } from "../types";
@@ -88,7 +88,7 @@ function mapPixtaEvent(event: unknown): Record<string, unknown> {
       description: descriptionFromBio(value.bio),
       venueName: getString(getRecord(value.venue).name),
     }),
-    city: cityName ? resolveCoveredCity(cityName) : undefined,
+    city: cityName ? resolveMunicipality(cityName) : undefined,
     startsAt: getString(value.event_starts_at)
       ? parseDate(value.event_starts_at as string)
       : undefined,
@@ -115,12 +115,12 @@ function isWithinWindow(
 
 /**
  * Pixta's public search includes all cities. Filter locally so spelling
- * variants such as "Curitiba " still resolve to the same Covered City.
+ * variants such as "Curitiba " still resolve to the same Municipality.
  */
 export const pixtaSource: OfferSource = {
   id: "pixta",
   name: "Pixta",
-  async fetchOffers(city: CoveredCity) {
+  async fetchOffers(city: Municipality) {
     const events = await paginate({
       maxPages: PIXTA_MAX_PAGES,
       fetchPage: async (page) => {

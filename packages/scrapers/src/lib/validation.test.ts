@@ -23,7 +23,7 @@ describe("validateRawOffers", () => {
     expect(skipped).toBe(1);
   });
 
-  it("drops a candidate whose city isn't a Covered City", () => {
+  it("drops a candidate whose city isn't a Municipality", () => {
     const { offers, skipped } = validateRawOffers("sympla", [
       { ...validCandidate, city: "Pomerode" },
     ]);

@@ -1,5 +1,5 @@
 import { and, asc, eq, gte, ilike, inArray, lt, or } from "drizzle-orm";
-import { COVERED_CITIES, getDb, offers } from "@repo/db";
+import { MUNICIPALITIES, getDb, offers } from "@repo/db";
 import { getSelectedCities, type CityFilter } from "./city-filter";
 import { MultiSelectFilter } from "./multi-select-filter";
 import { SingleSelectFilter } from "./single-select-filter";
@@ -192,7 +192,7 @@ export default async function Home({
             id="city"
             label="Cidade"
             name="city"
-            options={COVERED_CITIES}
+            options={MUNICIPALITIES}
             selectedValues={selectedCities}
             allLabel="Todas as cidades"
           />

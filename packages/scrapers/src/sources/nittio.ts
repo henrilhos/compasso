@@ -1,4 +1,4 @@
-import type { CoveredCity } from "@repo/db";
+import type { Municipality } from "@repo/db";
 import {
   delay,
   httpFetch,
@@ -54,7 +54,7 @@ function getString(value: unknown): string | undefined {
 
 function mapNittioEvent(
   event: unknown,
-  city: CoveredCity,
+  city: Municipality,
 ): Record<string, unknown> {
   const value = getRecord(event);
   const slug = getString(value.url);
@@ -89,13 +89,13 @@ function isWithinWindow(
 /**
  * Public events feed of the Nittio app (`api.app.nittio.com.br`). The feed
  * carries no city, only the venue name, so the city comes from the `city`
- * query filter, which matches the exact accented name of a Covered City.
+ * query filter, which matches the exact accented name of a Municipality.
  * The catalog is not paged by date: the Janela is applied locally.
  */
 export const nittioSource: OfferSource = {
   id: "nittio",
   name: "Nittio",
-  async fetchOffers(city: CoveredCity) {
+  async fetchOffers(city: Municipality) {
     await delay(NITTIO_REQUEST_DELAY_MS);
 
     const events = await paginate({
