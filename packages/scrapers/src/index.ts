@@ -1,4 +1,5 @@
 import { blumieSource } from "./sources/blumie";
+import { blueticketSource } from "./sources/blueticket";
 import { eventbriteSource } from "./sources/eventbrite";
 import { meapleSource } from "./sources/meaple";
 import { nittioSource } from "./sources/nittio";
@@ -17,4 +18,5 @@ export const sources = [
   eventbriteSource,
   nittioSource,
   ticketmasterSource,
+  blueticketSource,
 ];
