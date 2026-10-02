@@ -1,4 +1,10 @@
-import { MUNICIPALITIES, getDb, offers, type NewOffer } from "@repo/db";
+import {
+  COVERED_CITY_BY_MUNICIPALITY,
+  MUNICIPALITIES,
+  getDb,
+  offers,
+  type NewOffer,
+} from "@repo/db";
 import { enrichDescriptions, sources } from "@repo/scrapers";
 import { sql } from "drizzle-orm";
 import { createDescriptionStore } from "./description-store";
@@ -54,7 +60,7 @@ async function main() {
             imageUrl: rawOffer.imageUrl,
             venueName: rawOffer.venueName,
             address: rawOffer.address,
-            city: rawOffer.city,
+            city: COVERED_CITY_BY_MUNICIPALITY[rawOffer.city],
             startsAt: rawOffer.startsAt,
             endsAt: rawOffer.endsAt,
             lastSeenAt: collectedAt,
