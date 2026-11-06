@@ -2,13 +2,16 @@ name: Collect events
 
 on:
   schedule:
-    # 06:00 America/Sao_Paulo (UTC-3), daily
-    - cron: "0 9 * * *"
+    # 06:00 America/Sao_Paulo (UTC-3), Mon/Wed/Fri
+    - cron: "0 9 * * 1,3,5"
   workflow_dispatch: {}
 
 jobs:
   collect:
     runs-on: ubuntu-latest
+    # A run takes ~11 min today (mostly Sympla pagination); cap it so a hung
+    # scraper can't burn Actions minutes.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
